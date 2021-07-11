@@ -2,7 +2,7 @@
 lock "~> 3.11.1"
 
 set :application, "explorer"
-set :repo_url, "git@github.com:bitquery/explorer.git"
+set :repo_url, "git@github.com:thuanmaster/bitquery-explorer.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
