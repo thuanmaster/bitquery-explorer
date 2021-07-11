@@ -8,7 +8,7 @@ PIDFile=/var/www/explorer/current/tmp/pids/explorer.pid
 WorkingDirectory=/var/www/explorer/current
 Environment="RAILS_SERVE_STATIC_FILES=true"
 Environment="SECRET_KEY_BASE=<KEY>"
-Environment="EXPLORER_API_KEY=<API KEY>"
+Environment="EXPLORER_API_KEY=BQYBZlAgJf49ZYy4MDhDWl7m5lK084f4"
 Environment="BITQUERY_PROJECT_URL=https://bitquery.io"
 Environment="BITQUERY_IMAGES=https://bitquery.io/wp-content/uploads/2020/09"
 Environment="BITQUERY_GRAPHQL=https://graphql.bitquery.io"
