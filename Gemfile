@@ -58,9 +58,9 @@ end
 
 # Use Capistrano for deployment
 group :development, :test do
-  gem 'capistrano', '3.11.1'
+  gem 'capistrano', '3.14.1'
   gem 'capistrano-bundler'
-  gem 'capistrano-rails'
+  gem 'capistrano-rails', '1.6.1'
   # gem 'capistrano-rvm'
   gem 'dotenv-rails', '~> 2.7', '>= 2.7.6'
   gem 'sshkit-sudo'
