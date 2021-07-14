@@ -4,7 +4,7 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       execute 'mkdir -p /var/www/explorer/current/tmp/pids'
-      execute 'sudo systemctl restart explorer'
+      execute 'echo 0932788099 | sudo -S systemctl restart explorer'
     end
   end
 

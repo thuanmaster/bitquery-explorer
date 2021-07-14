@@ -41,7 +41,7 @@ set :keep_releases, 25
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 namespace :deploy do
-  after :publishing # :restart
+  after :publishing, :restart
 end
 
 # Uncomment the following to require manually verifying the host key before first deploy.
