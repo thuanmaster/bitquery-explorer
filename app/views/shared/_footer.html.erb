@@ -7,15 +7,5 @@
           <%= link_to network_icon(chain), "/#{chain[:network]}", {title: t("pages.footer.explorer", network:chain[:name])}%>
         <% end %>
     </div>
-
-    <%= t 'pages.footer.built' %>
-    <%= link_to t('pages.footer.widgets'), 'https://github.com/bitquery/widgets' %>
-    <i class="fab fa-github"></i>
-
-    <%= t 'pages.footer.by' %>
-    <%= link_to t('pages.footer.created'), 'https://bitquery.io' %><br>
-
-    <span style="font-size: 80%;">
-    <%= t 'pages.footer.feel_free' %></span>
   </div>
 </footer>

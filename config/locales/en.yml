@@ -37,7 +37,7 @@ en:
         name: "Payer"
         title: "Payers %{network} | %{payer_account}"
         description: "Visualize %{network} payer %{payer_account} , balances, 
-          transactions, tokens, coins, transfers, and other analytics, charts and widgets on Bitquery"
+          transactions, tokens, coins, transfers, and other analytics, charts and widgets on Openchain"
         keywords: "%{network} wallet, %{network} address check, %{network} address validation, 
         %{network} address, %{network} addresses, %{network} address tracker, %{network} address checker,
         %{network} address search, blockchain address, %{network} balance, %{network} address balance, %{network} address blockchain, 
@@ -83,7 +83,7 @@ en:
         name: "Node"
         title: "Nodes %{network} | %{node_account}"
         description: "Visualize %{network} node %{node_account} , balances, 
-          transactions, tokens, coins, transfers, and other analytics, charts and widgets on Bitquery"
+          transactions, tokens, coins, transfers, and other analytics, charts and widgets on Openchain"
         keywords: "%{network} wallet, %{network} address check, %{network} address validation, 
         %{network} address, %{network} addresses, %{network} address tracker, %{network} address checker,
         %{network} address search, blockchain address, %{network} balance, %{network} address balance, %{network} address blockchain, 
@@ -98,7 +98,7 @@ en:
         name: "Account"
         title: "Accounts %{network} | %{account}"
         description: "Visualize %{network} address %{account} , balances, 
-          transactions, tokens, coins, transfers, and other analytics, charts and widgets on Bitquery"
+          transactions, tokens, coins, transfers, and other analytics, charts and widgets on Openchain"
         keywords: "%{network} wallet, %{network} address check, %{network} address validation, 
         %{network} address, %{network} addresses, %{network} address tracker, %{network} address checker,
         %{network} address search, blockchain address, %{network} balance, %{network} address balance, %{network} address blockchain, 
@@ -127,7 +127,7 @@ en:
         name: "Contract"
         title: "Contract %{network} | %{contract}"
         description: "Visualize %{network} contract %{contract} , balances, 
-          transactions, tokens, coins, transfers, and other analytics, charts and widgets on Bitquery"
+          transactions, tokens, coins, transfers, and other analytics, charts and widgets on Openchain"
         keywords: "%{network} wallet, %{network} address check, %{network} address validation, 
         %{network} address, %{network} addresses, %{network} address tracker, %{network} address checker,
         %{network} address search, blockchain address, %{network} balance, %{network} address balance, %{network} address blockchain, 
@@ -141,7 +141,7 @@ en:
       show:
         name: "Topic"
         title: "Topics %{network} | %{topic}"
-        description: "Visualize %{network} address %{topic} portfolio, balances, transactions, tokens, coins, transfers, and other analytics, charts and widgets on Bitquery"
+        description: "Visualize %{network} address %{topic} portfolio, balances, transactions, tokens, coins, transfers, and other analytics, charts and widgets on Openchain"
         keywords: "%{network} wallet, %{network} address check, %{network} address validation, 
         %{network} address, %{network} addresses, %{network} address tracker, %{network} address checker,
         %{network} address search, blockchain address, %{network} balance, %{network} address balance, %{network} address blockchain, 
@@ -162,7 +162,7 @@ en:
       show:
         name: 'Address'
         title: "Address %{address} | %{network}"
-        description: "Visualize %{network} address ${address} portfolio, balances, transactions, tokens, coins, transfers, and other analytics, charts and widgets on Bitquery"
+        description: "Visualize %{network} address ${address} portfolio, balances, transactions, tokens, coins, transfers, and other analytics, charts and widgets on Openchain"
         keywords: "%{network} wallet, %{network} address check, %{network} address validation, 
         %{network} address, %{network} addresses, %{network} address tracker, %{network} address checker,
         %{network} address search, blockchain address, %{network} balance, %{network} address balance, %{network} address blockchain, 
@@ -284,7 +284,7 @@ en:
       header: "%{token} in %{network}"
       show:
         name: 'Token'
-        title: "%{token} Analytics | %{network} | Bitquery"
+        title: "%{token} Analytics | %{network} | Openchain"
         description: "Check %{token} address in %{network}, transactions, wallet, status, gas fee, time, cost, transfers, and other analytics, charts and widgets"
         keywords: "%{token}, %{token} coin, %{token} cryptocurrency, %{token} crypto, %{token} %{network}, %{token} explorer, %{token} price, %{token} token,
         %{token} wallet, %{token} widget, %{token} chart, %{token} analytics, 
@@ -382,7 +382,7 @@ en:
       header: "%{token} in %{network}"
       show:
         name: 'Token'
-        title: "%{token} Analytics | %{network} | Bitquery"
+        title: "%{token} Analytics | %{network} | Openchain"
         description: "Check %{token} address in %{network}, transactions, wallet, status, gas fee, time, cost, transfers, and other analytics, charts and widgets"
         keywords: "%{token}, %{token} coin, %{token} cryptocurrency, %{token} crypto, %{token} %{network}, %{token} explorer, %{token} price, %{token} token,
         %{token} wallet, %{token} widget, %{token} chart, %{token} analytics, 
@@ -465,7 +465,7 @@ en:
       header: "%{token} in %{network}"
       show:
         name: 'Token'
-        title: "%{token} Analytics | %{network} | Bitquery"
+        title: "%{token} Analytics | %{network} | Openchain"
         description: "Check %{token} address in %{network}, transactions, wallet, status, gas fee, time, cost, transfers, and other analytics, charts and widgets"
         keywords: "%{token}, %{token} coin, %{token} cryptocurrency, %{token} crypto, %{token} %{network}, %{token} explorer, %{token} price, %{token} token,
         %{token} wallet, %{token} widget, %{token} chart, %{token} analytics, 
@@ -668,21 +668,21 @@ en:
       header: "%{network} Blockchain Explorer"
       blocks:
         name: "Blocks"
-        title: "%{network} Explorer | Bitquery"
+        title: "%{network} Explorer | Openchain"
         description: "Search %{network} transactions, address, blocks, and miners on the blockchain, and check your %{network} balance and transaction fee, status and other analytics, charts and widgets"
         keywords: "%{network} address lookup, explore %{network} transactions, track %{network} transactions,
         %{network} wallet explorer,%{network} address check, search %{network} address, %{network} address validation,
         %{network} blocks, %{network} block height, %{network} block size, %{network} block time, %{network} block reward, %{network} block explorer"
       transactions:
         name: "Transactions"
-        title: "%{network} Transactions | Bitquery"
+        title: "%{network} Transactions | Openchain"
         description: "Check latest %{network} transactions, fee, transactions per day and other transaction related analytics, charts and widgets"
         keywords: "explore %{network} transactions, track %{network} transactions, search %{network} transactions, 
         %{network} transactions per day, %{network} transaction fee, %{network} transaction live, %{network} transaction live, %{network} transaction time, %{network} transaction data,
          %{network} transactions per second chart, %{network} transactions chart, tracking %{network} transactions, %{network} transactions status, check %{network} transactions pending"
       messages:
         name: "Messages"
-        title: "%{network} Messages | Bitquery"
+        title: "%{network} Messages | Openchain"
         description: "Check latest %{network} messages related analytics, charts and widgets"
         keywords: "explore %{network} messages, track %{network} messages, search %{network} messages,
         %{network} messages per day, %{network} messages fee, %{network} messages live, %{network} messages live, %{network} transaction time, %{network} messages data,
@@ -828,20 +828,20 @@ en:
       index:
         name: "All"
         header: "Blockchain Explorers"
-        title: "Blockchain Explorer By Bitquery"
-        description: "Track Blockchain transaction for 20+ blockchains, check Bitcoin explorer, Ethereum explorer and other blockchain explorers by Bitquery"
+        title: "Blockchain Explorer By Openchain"
+        description: "Track Blockchain transaction for 20+ blockchains, check Bitcoin explorer, Ethereum explorer and other blockchain explorers by Openchain"
         keywords: "Blockchain explorer, transaction explorer, Bitcoin explorer, Ethereum explorer, Litecoin explorer, Dogecoin explorer, Dash explorer, Zcash explorer, Bitcoin cash explorer, Bitcoin SV explorer, Cardano Explorer, Ethereum Classic Explorer, Algorand Explorer, Celo Explorer, EOS explorer, TRON explorer"
       smart_contract:
         name: "Smart Contract Blockchains"
         header: "Smart Contract Blockchains"
         title: "Smart Contract Blockchains"
-        description: "Explorers for Smart Contract Blockchains such as Ethereum, Cardano, Algorand, Conflux, Tron, EOS, Celo by Bitquery"
+        description: "Explorers for Smart Contract Blockchains such as Ethereum, Cardano, Algorand, Conflux, Tron, EOS, Celo by Openchain"
         keywords: "Smart contract blockchains, blockchain transactions, blockchain address, address, balance, eth explorer, cardano explorer, ada explorer, celo explorer, eos explorer, conflux explorer, explorer, address balance, address portfolio, address tokens, coin, crypto, blockchain address analytics, DeFi explorer, smart contract call, explorer,search, currency,address lookup"
       bitcoin:
         name: "UTXO Based Blockchains"
         header: "UTXO Based Blockchains"
         title: "UTXO Based Blockchains Explorer"
-        description: "UTXO based blockchain Explorers such Bitcoin, Litecoin, Zcash, Dash, Bitcoin Cash Blockchain explorers by Bitquery"
+        description: "UTXO based blockchain Explorers such Bitcoin, Litecoin, Zcash, Dash, Bitcoin Cash Blockchain explorers by Openchain"
         keywords: "blockchain explorer, bitcoin explorer, litecoin explorer, zcash explorer, dash explorer, bitcoin cash explorer, bitcoin sv explorer, Dogecoin explorer, Cardano Explorer"
       cosmos:
         name: "Cosmos Based Blockchains"
@@ -853,31 +853,31 @@ en:
         name: "Diem (former Libra) Based Platform"
         header: "Diem (former Libra) Based Blockchain"
         title: "Diem (former Libra) Blockchains Explorer"
-        description: "Explorers for Diem (former Libra) Blockchains by Bitquery"
+        description: "Explorers for Diem (former Libra) Blockchains by Openchain"
         keywords: "Diem (former Libra) explorer, Diem (former Libra) transaction tracker, Diem (former Libra) blockchain explorer, Diem (former Libra) address, Diem (former Libra) transactions"
       offchain:
         name: "Offchain Data"
-        header: "Offchain Data at Bitquery"
-        title: "Offchain Data Explorer at Bitquery"
-        description: "Explorers for Offchain Data by Bitquery"
+        header: "Offchain Data at Openchain"
+        title: "Offchain Data Explorer at Openchain"
+        description: "Explorers for Offchain Data by Openchain"
         keywords: "Covid-19 data, Covid-19 APIs, Covid API"
       testnet:
         name: "Blockchain Testnets"
         header: "Blockchain Testnet Explorers"
         title: "Testnet Blockchain Explorers"
-        description: "Testnet explorers for Algorand, Celo, Binance Chain, Libra blockchain by Bitquery"
+        description: "Testnet explorers for Algorand, Celo, Binance Chain, Libra blockchain by Openchain"
         keywords: "Algorand testnet Explorer, Celo Testnet explorer, Libra testnet explorer, Binance chain testnet explorer, testnet transaction, testnet address"
       utility:
         name: "Utility Blockchains"
         header: "Utility Blockchain Explorers"
         title: "Utility Blockchain Explorers"
-        description: "Testnet explorers for Filecoin, other utility blockchain by Bitquery"
+        description: "Testnet explorers for Filecoin, other utility blockchain by Openchain"
         keywords: "Filecoin Explorer"
       graph:
         name: "Graphs"
         header: "Graphs DLT"
         title: "Graphs DLT Explorer"
-        description: "Explorers for Graph DLT ( DAG, Hashgraph) by Bitquery"
+        description: "Explorers for Graph DLT ( DAG, Hashgraph) by Openchain"
         keywords: "DAG,Hashgraph,Graphs DLT explorer, Graph-Based DLT transaction tracker, Graph-Based DLT explorer, Graph-Based DLT address, Graph-Based DLT transactions"
     order:
       icon: 'fas fa-file-invoice-dollar'
@@ -961,7 +961,7 @@ en:
       show:
         name: 'Validator'
         title: "Validator %{index} | %{network}"
-        description: "Visualize %{network} Validator ${index} analytics, charts and widgets on Bitquery"
+        description: "Visualize %{network} Validator ${index} analytics, charts and widgets on Openchain"
         keywords: "%{network} Validator ${index}"
   errors:
     no_methods: "Function not yet implemented, try returning later"
@@ -1420,7 +1420,7 @@ en:
       blockchain: "%{network} Explorer"
     footer:
       explorer: "%{network} Explorer"
-      created: "Bitquery.io"
+      created: "Openchain.info"
       by: "by"
       built: "Built with"
       widgets: "Widgets"

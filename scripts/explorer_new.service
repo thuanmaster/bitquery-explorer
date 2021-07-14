@@ -1,0 +1,19 @@
+[Unit]
+Description=explorer
+Requires=network.target
+
+[Service]
+User=ubuntu
+PIDFile=/home/ubuntu/explorer/tmp/pids/explorer.pid
+WorkingDirectory=/home/ubuntu/explorer
+Environment="RAILS_SERVE_STATIC_FILES=true"
+Environment="SECRET_KEY_BASE=b07619271431e0409e69660a6a2c647903ce77e19d2132803a9dcf9fe64daf69d2d5218f014ec6a9c9a202e3516d57693c0b5dfe8cce1b0ce19934e0b185a6e8"
+Environment="BITQUERY_PROJECT_URL=https://bitquery.io"
+Environment="BITQUERY_IMAGES=https://bitquery.io/wp-content/uploads/2020/09"
+Environment="BITQUERY_GRAPHQL=https://graphql.bitquery.io"
+Environment="ANALYTICS=true"
+Environment="PATH=/home/ubuntu/.rvm/rubies/ruby-2.6.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/bin/bash -lc 'export RAILS_ENV=production && export GEM_PATH=/home/ubuntu/.rvm/rubies/ruby-2.6.3 && cd /home/ubuntu/explorer && pumactl -F config/puma.production.rb -P tmp/pids/explorer.pid start'
+
+[Install]
+WantedBy=multi-user.target
