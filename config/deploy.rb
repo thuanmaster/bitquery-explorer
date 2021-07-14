@@ -28,6 +28,10 @@ set :deploy_to, "/var/www/explorer"
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
+set :default_env, {
+  PATH: '$HOME/.nvm/versions/node/v12.22.3/bin/:$PATH',
+  NODE_ENVIRONMENT: 'production'
+}
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
@@ -37,7 +41,7 @@ set :keep_releases, 25
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 namespace :deploy do
-  after :publishing, :restart
+  after :publishing # :restart
 end
 
 # Uncomment the following to require manually verifying the host key before first deploy.
