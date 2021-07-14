@@ -49,7 +49,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :error
+  config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -113,7 +113,6 @@ Rails.application.configure do
 
   Raven.configure do |config|
     config.dsn = 'https://a229f44aca4540fc816b15ad75776d36@o581754.ingest.sentry.io/5823161' # errors@bitquery.io
-    config.environments = %w[production]
     config.silence_ready = true
   end
 end
