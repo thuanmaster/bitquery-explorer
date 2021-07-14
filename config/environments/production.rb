@@ -111,11 +111,9 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
-  logger = ::Logger.new(STDOUT)
-  logger.level = ::Logger::WARN
-
   Raven.configure do |config|
     config.dsn = 'https://a229f44aca4540fc816b15ad75776d36@o581754.ingest.sentry.io/5823161' # errors@bitquery.io
-    config.logger = logger
+    config.environments = %w[production]
+    config.silence_ready = true
   end
 end
