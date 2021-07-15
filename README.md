@@ -161,3 +161,11 @@ and more!
 
 ### Services
 /etc/systemd/system/explorer.service
+
+### BUILD PROD
+- git commit & push current branch origin1
+
+- git checkout master
+- git pull last branch
+- git push origin master
+- bundle exec cap production deploy
