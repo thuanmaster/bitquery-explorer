@@ -1,0 +1,7 @@
+<% unless @native_token %>
+<%= render partial: 'cse30/trc20token/senders' %>
+<% end  %>
+
+<div class="row">
+  <%= render partial: 'cse30/trc20token/senders_by_time' %>
+</div>

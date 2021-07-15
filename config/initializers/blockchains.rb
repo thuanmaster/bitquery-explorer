@@ -258,6 +258,15 @@ BLOCKCHAINS = [
   #   currency: 'LBR',
   #   icon: 'currency/libra.png'
   # },
+  # {
+  #   tag: 'cse30',
+  #   network: 'cse30',
+  #   name: 'Blockchain 3.0',
+  #   family: 'cse30',
+  #   platform: 'CSE30',
+  #   currency: 'CSE',
+  #   icon: 'public/openchain_icon.png'
+  # },
   {
     tag: 'hedera',
     network: 'hedera',
@@ -285,16 +294,6 @@ BLOCKCHAINS = [
     currency: 'TRX',
     icon: 'trx.svg'
   },
-  # {
-  #   tag: 'medalla',
-  #   network: 'medalla',
-  #   name: 'Medalla Eth 2.0 Testnet',
-  #   family: 'ethereum2',
-  #   platform: 'Testnet',
-  #   currency: 'ETH',
-  #   icon: 'eth.svg',
-  #   start: Date.parse('2020-08-03')
-  # },
   {
     tag: 'eth2',
     network: 'eth2',
@@ -305,6 +304,25 @@ BLOCKCHAINS = [
     icon: 'eth.svg',
     start: Date.parse('2020-12-01')
   },
+  {
+    tag: 'cse30',
+    network: 'cse30',
+    name: 'Open Chain Mainnet',
+    family: 'cse30',
+    platform: 'Smart Contract',
+    currency: 'CSE',
+    icon: 'public/openchain_icon.png'
+  },
+  # {
+  #   tag: 'medalla',
+  #   network: 'medalla',
+  #   name: 'Medalla Eth 2.0 Testnet',
+  #   family: 'ethereum2',
+  #   platform: 'Testnet',
+  #   currency: 'ETH',
+  #   icon: 'eth.svg',
+  #   start: Date.parse('2020-08-03')
+  # },
   # {
   #   tag: 'filecoin',
   #   network: 'filecoin',

@@ -1,5 +1,5 @@
 <div class="row reportrange mb-4">
-  <div class="col text-right">
+  <div class="col text-right"  <% if @network[:network] == 'cse30' %>style="display:none;"<% end %>>
     <label><%= t 'reportrange.title' %></label>
     <div id="reportrange">
       <i class="fa fa-calendar"></i>&nbsp;

@@ -1,7 +1,12 @@
 module NetworkHelper
 
   def network_icon_path network
-    network[:icon].starts_with?('currency') ? asset_path(network[:icon]) : image_pack_path("media/icon/#{network[:icon]}")
+    if network[:icon].starts_with?('public')
+      # image_pack_path("#{network[:icon][6..]}")
+      "#{network[:icon][6..]}"
+    else 
+      network[:icon].starts_with?('currency') ? asset_path(network[:icon]) : image_pack_path("media/icon/#{network[:icon]}")
+    end
   end
 
   def network_icon network, options = {}
