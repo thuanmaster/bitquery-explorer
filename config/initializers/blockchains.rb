@@ -221,15 +221,15 @@ BLOCKCHAINS = [
     start: Date.parse('2020-04-22')
   },
 
-  {
-    tag: 'conflux_tethys',
-    network: 'conflux_tethys',
-    name: 'Conflux Tethys',
-    family: 'conflux',
-    platform: 'Smart Contract',
-    currency: 'CFX',
-    icon: 'currency/conflux.png'
-  },
+  # {
+  #   tag: 'conflux_tethys',
+  #   network: 'conflux_tethys',
+  #   name: 'Conflux Tethys',
+  #   family: 'conflux',
+  #   platform: 'Smart Contract',
+  #   currency: 'CFX',
+  #   icon: 'currency/conflux.png'
+  # },
 
   # {
   #   tag: 'conflux_oceanus',
@@ -305,16 +305,16 @@ BLOCKCHAINS = [
     icon: 'eth.svg',
     start: Date.parse('2020-12-01')
   },
-  {
-    tag: 'filecoin',
-    network: 'filecoin',
-    name: 'Filecoin Mainnet',
-    family: 'filecoin',
-    platform: 'Utility',
-    currency: 'FIL',
-    icon: 'currency/fil.svg'
+  # {
+  #   tag: 'filecoin',
+  #   network: 'filecoin',
+  #   name: 'Filecoin Mainnet',
+  #   family: 'filecoin',
+  #   platform: 'Utility',
+  #   currency: 'FIL',
+  #   icon: 'currency/fil.svg'
 
-  },
+  # },
 ]
 
 BLOCKCHAIN_BY_NAME = BLOCKCHAINS.index_by { |b| b[:network] }
