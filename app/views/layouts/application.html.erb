@@ -14,7 +14,9 @@
     </div>
   </div>
   <%= render(partial: "#{@network[:family]}/render_callbacks") if @network %>
-  <%= yield %>
+  <div class="container-view">
+    <%= yield %>
+  </div>
   <%= render partial: 'shared/footer' %>
 </div>
 </body>

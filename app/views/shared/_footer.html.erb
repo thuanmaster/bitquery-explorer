@@ -1,11 +1,17 @@
 <footer>
 
-  <div class="container-fluid mt-5 mb-5 text-center">
+  <div class="container-fluid mt-5 mb-2 text-center">
 
     <div style="margin-bottom: 5px;">
         <% for chain in BLOCKCHAINS %>
           <%= link_to network_icon(chain), "/#{chain[:network]}", {title: t("pages.footer.explorer", network:chain[:name])}%>
         <% end %>
     </div>
+    <br>
+    Member of blockchain center
+    <br>
+    <span style="font-size: 90%;">
+      Thailand | India | Dubai | USA | Swisszeland | Vietnam | Germany | Singapore | Maritius | Africa Kingdom
+    </span>
   </div>
 </footer>

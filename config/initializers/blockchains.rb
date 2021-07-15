@@ -60,16 +60,16 @@ BLOCKCHAINS = [
 
   },
 
-  {
-    tag: 'etc',
-    network: 'ethclassic_reorg',
-    name: 'Ethereum Classic no reorg',
-    family: 'ethereum',
-    platform: 'Smart Contract',
-    currency: 'ETC',
-    icon: 'etc.svg'
+  # {
+  #   tag: 'etc',
+  #   network: 'ethclassic_reorg',
+  #   name: 'Ethereum Classic no reorg',
+  #   family: 'ethereum',
+  #   platform: 'Smart Contract',
+  #   currency: 'ETC',
+  #   icon: 'etc.svg'
 
-  },
+  # },
 
   {
     tag: 'zcash',
@@ -122,60 +122,60 @@ BLOCKCHAINS = [
 
   },
 
-  {
-    tag: 'algorand_testnet',
-    network: 'algorand_testnet',
-    name: 'Algorand Testnet',
-    family: 'algorand',
-    platform: 'Testnet',
-    currency: 'ALGO',
-    icon: 'currency/algo.png'
+  # {
+  #   tag: 'algorand_testnet',
+  #   network: 'algorand_testnet',
+  #   name: 'Algorand Testnet',
+  #   family: 'algorand',
+  #   platform: 'Testnet',
+  #   currency: 'ALGO',
+  #   icon: 'currency/algo.png'
 
-  },
+  # },
 
-  {
-    tag: 'algorand_betanet',
-    network: 'algorand_betanet',
-    name: 'Algorand Betanet',
-    family: 'algorand',
-    platform: 'Testnet',
-    currency: 'ALGO',
-    icon: 'currency/algo.png'
+  # {
+  #   tag: 'algorand_betanet',
+  #   network: 'algorand_betanet',
+  #   name: 'Algorand Betanet',
+  #   family: 'algorand',
+  #   platform: 'Testnet',
+  #   currency: 'ALGO',
+  #   icon: 'currency/algo.png'
 
-  },
+  # },
 
-  {
-    tag: 'binance',
-    network: 'binance',
-    name: 'Binance DEX',
-    family: 'binance',
-    platform: 'Cosmos',
-    currency: 'BNB',
-    icon: 'bnb.svg'
+  # {
+  #   tag: 'binance',
+  #   network: 'binance',
+  #   name: 'Binance DEX',
+  #   family: 'binance',
+  #   platform: 'Cosmos',
+  #   currency: 'BNB',
+  #   icon: 'bnb.svg'
 
-  },
+  # },
 
-  {
-    tag: 'alfajores',
-    network: 'celo_alfajores',
-    name: 'Celo Alfajores Testnet',
-    family: 'ethereum',
-    platform: 'Testnet',
-    currency: 'cGLD',
-    icon: 'currency/celo.png',
-    start: Date.parse('2020-04-10')
-  },
+  # {
+  #   tag: 'alfajores',
+  #   network: 'celo_alfajores',
+  #   name: 'Celo Alfajores Testnet',
+  #   family: 'ethereum',
+  #   platform: 'Testnet',
+  #   currency: 'cGLD',
+  #   icon: 'currency/celo.png',
+  #   start: Date.parse('2020-04-10')
+  # },
 
-  {
-    tag: 'bsc_testnet',
-    network: 'bsc_testnet',
-    name: 'Binance Smart Chain Testnet',
-    family: 'ethereum',
-    platform: 'Testnet',
-    currency: 'BNB',
-    icon: 'bnb.svg',
-    start: Date.parse('2020-04-20')
-  },
+  # {
+  #   tag: 'bsc_testnet',
+  #   network: 'bsc_testnet',
+  #   name: 'Binance Smart Chain Testnet',
+  #   family: 'ethereum',
+  #   platform: 'Testnet',
+  #   currency: 'BNB',
+  #   icon: 'bnb.svg',
+  #   start: Date.parse('2020-04-20')
+  # },
 
   {
     tag: 'bsc',
@@ -188,27 +188,27 @@ BLOCKCHAINS = [
     start: Date.parse('2020-08-29')
   },
 
-  {
-    tag: 'goerli',
-    network: 'goerli',
-    name: 'Goerli Ethereum Testnet',
-    family: 'ethereum',
-    platform: 'Testnet',
-    currency: 'GTH',
-    icon: 'eth.svg',
-    start: Date.parse('2019-01-30')
-  },
+  # {
+  #   tag: 'goerli',
+  #   network: 'goerli',
+  #   name: 'Goerli Ethereum Testnet',
+  #   family: 'ethereum',
+  #   platform: 'Testnet',
+  #   currency: 'GTH',
+  #   icon: 'eth.svg',
+  #   start: Date.parse('2019-01-30')
+  # },
 
-  {
-    tag: 'baklava',
-    network: 'celo_baklava',
-    name: 'Celo Baklava Testnet',
-    family: 'ethereum',
-    platform: 'Testnet',
-    currency: 'cGLD',
-    icon: 'currency/celo.png',
-    start: Date.parse('2020-04-07')
-  },
+  # {
+  #   tag: 'baklava',
+  #   network: 'celo_baklava',
+  #   name: 'Celo Baklava Testnet',
+  #   family: 'ethereum',
+  #   platform: 'Testnet',
+  #   currency: 'cGLD',
+  #   icon: 'currency/celo.png',
+  #   start: Date.parse('2020-04-07')
+  # },
 
   {
     tag: 'celo',
@@ -231,33 +231,33 @@ BLOCKCHAINS = [
     icon: 'currency/conflux.png'
   },
 
-  {
-    tag: 'conflux_oceanus',
-    network: 'conflux_oceanus',
-    name: 'Conflux Oceanus',
-    family: 'conflux',
-    platform: 'Testnet',
-    currency: 'CFX',
-    icon: 'currency/conflux.png'
-  },
-  {
-    tag: 'diem',
-    network: 'diem_testnet',
-    name: 'Diem Testnet',
-    family: 'diem',
-    platform: 'Diem',
-    currency: 'Diem',
-    icon: 'currency/libra.png'
-  },
-  {
-    tag: 'libra',
-    network: 'libra_testnet',
-    name: 'Libra Testnet',
-    family: 'diem',
-    platform: 'Diem',
-    currency: 'LBR',
-    icon: 'currency/libra.png'
-  },
+  # {
+  #   tag: 'conflux_oceanus',
+  #   network: 'conflux_oceanus',
+  #   name: 'Conflux Oceanus',
+  #   family: 'conflux',
+  #   platform: 'Testnet',
+  #   currency: 'CFX',
+  #   icon: 'currency/conflux.png'
+  # },
+  # {
+  #   tag: 'diem',
+  #   network: 'diem_testnet',
+  #   name: 'Diem Testnet',
+  #   family: 'diem',
+  #   platform: 'Diem',
+  #   currency: 'Diem',
+  #   icon: 'currency/libra.png'
+  # },
+  # {
+  #   tag: 'libra',
+  #   network: 'libra_testnet',
+  #   name: 'Libra Testnet',
+  #   family: 'diem',
+  #   platform: 'Diem',
+  #   currency: 'LBR',
+  #   icon: 'currency/libra.png'
+  # },
   {
     tag: 'hedera',
     network: 'hedera',
@@ -285,16 +285,16 @@ BLOCKCHAINS = [
     currency: 'TRX',
     icon: 'trx.svg'
   },
-  {
-    tag: 'medalla',
-    network: 'medalla',
-    name: 'Medalla Eth 2.0 Testnet',
-    family: 'ethereum2',
-    platform: 'Testnet',
-    currency: 'ETH',
-    icon: 'eth.svg',
-    start: Date.parse('2020-08-03')
-  },
+  # {
+  #   tag: 'medalla',
+  #   network: 'medalla',
+  #   name: 'Medalla Eth 2.0 Testnet',
+  #   family: 'ethereum2',
+  #   platform: 'Testnet',
+  #   currency: 'ETH',
+  #   icon: 'eth.svg',
+  #   start: Date.parse('2020-08-03')
+  # },
   {
     tag: 'eth2',
     network: 'eth2',
