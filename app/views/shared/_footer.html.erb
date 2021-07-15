@@ -3,7 +3,11 @@
   <div class="container-fluid mt-5 mb-2 text-center">
 
     <div style="margin-bottom: 5px;">
-        <% for chain in BLOCKCHAINS %>
+        <% for chain in BLOCKCHAINS.slice(0, 9) %>
+          <%= link_to network_icon(chain), "/#{chain[:network]}", {title: t("pages.footer.explorer", network:chain[:name])}%>
+        <% end %>
+        <a title="Openchain" href="/"><img style="width: 32px; height: auto" alt="Bitcoin Cash" src="/openchain_icon.png"></a>
+        <% for chain in BLOCKCHAINS.slice(9, 17) %>
           <%= link_to network_icon(chain), "/#{chain[:network]}", {title: t("pages.footer.explorer", network:chain[:name])}%>
         <% end %>
     </div>
