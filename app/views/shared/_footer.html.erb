@@ -7,7 +7,7 @@
           <%= link_to network_icon(chain), "/#{chain[:network]}", {title: t("pages.footer.explorer", network:chain[:name])}%>
         <% end %>
         <%# <a title="Openchain" href="/"><img style="width: 32px; height: auto" alt="Bitcoin Cash" src="/openchain_icon.png"></a> %>
-        <% for chain in BLOCKCHAINS.slice(9, 18).reverse() %>
+        <% for chain in BLOCKCHAINS.slice(9, 8).reverse() %>
           <%= link_to network_icon(chain), "/#{chain[:network]}", {title: t("pages.footer.explorer", network:chain[:name])}%>
         <% end %>
     </div>

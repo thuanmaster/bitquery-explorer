@@ -295,6 +295,15 @@ BLOCKCHAINS = [
     icon: 'trx.svg'
   },
   {
+    tag: 'cse30',
+    network: 'cse30',
+    name: 'Open Chain Mainnet',
+    family: 'cse30',
+    platform: 'Smart Contract',
+    currency: 'CSE',
+    icon: 'public/openchain_icon.png'
+  },
+  {
     tag: 'eth2',
     network: 'eth2',
     name: 'Beacon Chain Ethereum 2.0',
@@ -303,15 +312,6 @@ BLOCKCHAINS = [
     currency: 'ETH',
     icon: 'eth.svg',
     start: Date.parse('2020-12-01')
-  },
-  {
-    tag: 'cse30',
-    network: 'cse30',
-    name: 'Open Chain Mainnet',
-    family: 'cse30',
-    platform: 'Smart Contract',
-    currency: 'CSE',
-    icon: 'public/openchain_icon.png'
   },
   # {
   #   tag: 'medalla',
