@@ -319,3 +319,11 @@ global.queryWithTimeRange = function(rr, query, from, till, params){
 
 };
 
+global.numberWithCommas = function(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+global.queryCseScan = function(url, params){
+    console.log('queryCseScan', url, params);
+    return $.get(`${url}?${params}`);
+};
