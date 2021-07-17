@@ -3,67 +3,118 @@
   <div class="card">
     <div class="card-header"><%= t('widgets.headers.block_info') %></div>
     <div class="card-body">
-      <div id="block_info"><%= t('loading') %></div>
+      <div class="text-center widgets-loading" id="loading"><div role="status" class="spinner-border text-info"><span class="sr-only"><%= t('loading') %></span></div></div>
+      <div class="widgets-blur" id="container-data">
+        <div class="table-responsive" id="table-data" style="display: none;">
+          <table class="table table-striped table-hover table-sm widgets-table">
+            <thead>
+              <tr>
+                <th class=""><%= t('widgets.titles.attribute') %></th>
+                <th class=""><%= t('widgets.titles.property_value') %></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 </div>
 <script>
+  function loadDataTable() {
+    queryCseScan('blocks/<%= @height %>', '')
+    .done(function(data) {
+      $('#table-data').show();
+      console.log('query data', data);
+      tableBody = $("table tbody");
+      tableBody.append(`<tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.timestamp') %></span></td>
+          <td class="ellipsis "><span>${m(Number(data.block.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Transactions</span></td>
+          <td class="ellipsis "><span>${data.block.transactions}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Difficulty</span></td>
+          <td class="ellipsis "><span>${numberWithCommas(data.block.difficulty)}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Size</span></td>
+          <td class="ellipsis "><span>${numberWithCommas(data.block.size)}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Hash</span></td>
+          <td class="ellipsis "><span>${data.block.hash}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Parent Hash</span></td>
+          <td class="ellipsis "><span>${data.block.preHash}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Nonce</span></td>
+          <td class="ellipsis "><span>${data.block.nonce}</span></td>
+        </tr>`);
+      toogleLoading(false);
+    });
+  }
 
-    $( document ).ready(function() {
+    $( document ).ready(function() { 
+      loadDataTable();
+        // var query = new widgets.query(`query (
+        //                       $height: Int!){
+        //                   tron{
 
-        var query = new widgets.query(`query (
-                              $height: Int!){
-                          tron{
-
-                              blocks(height: {is: $height}){
-                                timestamp {
-                                  time (format: "%Y-%m-%d %H:%M:%S")
-                                }
-                                version
-                                hash
-                                witness {
-                                  address
-                                  annotation
-                                }
-                              }
-                            }
-                        }`);
+        //                       blocks(height: {is: $height}){
+        //                         timestamp {
+        //                           time (format: "%Y-%m-%d %H:%M:%S")
+        //                         }
+        //                         version
+        //                         hash
+        //                         witness {
+        //                           address
+        //                           annotation
+        //                         }
+        //                       }
+        //                     }
+        //                 }`);
 
 
 
-        new widgets.table('#block_info', query, 'tron.blocks', {
-            title: '<%= t('widgets.headers.block_info') %>',
-            renderData: function (data) {
-                item = data[0];
-                return !item ? [] : [
-                    {name: '<%= t('widgets.titles.timestamp') %>', value: item.timestamp.time},
-                    {name: '<%= t('widgets.titles.witness') %>', value: (item.witness.annotation || item.witness.address), address: item.witness},
-                    {name: '<%= t('widgets.titles.version') %>', value: item.version},
-                    {name: '<%= t('widgets.titles.hash') %>', value: item.hash}
-                ];
-            },
-            dataOptions: [
-                {
-                    title: '<%= t('widgets.titles.attribute') %>',
-                    type: 'string',
-                    path: 'name',
-                    style: 'width: 110px',
-                    html_class: 'text-info font-weight-bold'
-                },
-                {
-                    title: '<%= t('widgets.titles.property_value') %>',
-                    type: 'string-ellipsis',
-                    path: 'value',
-                    urlCallbackName: 'property_value_path'
-                },
-            ]
-        });
+        // new widgets.table('#block_info', query, 'tron.blocks', {
+        //     title: '<%= t('widgets.headers.block_info') %>',
+        //     renderData: function (data) {
+        //         item = data[0];
+        //         return !item ? [] : [
+        //             {name: '<%= t('widgets.titles.timestamp') %>', value: item.timestamp.time},
+        //             {name: '<%= t('widgets.titles.witness') %>', value: (item.witness.annotation || item.witness.address), address: item.witness},
+        //             {name: '<%= t('widgets.titles.version') %>', value: item.version},
+        //             {name: '<%= t('widgets.titles.hash') %>', value: item.hash}
+        //         ];
+        //     },
+        //     dataOptions: [
+        //         {
+        //             title: '<%= t('widgets.titles.attribute') %>',
+        //             type: 'string',
+        //             path: 'name',
+        //             style: 'width: 110px',
+        //             html_class: 'text-info font-weight-bold'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.property_value') %>',
+        //             type: 'string-ellipsis',
+        //             path: 'value',
+        //             urlCallbackName: 'property_value_path'
+        //         },
+        //     ]
+        // });
 
-        query.request({
+        // query.request({
 
-            height: <%= @height %>
-        });
+        //     height: <%= @height %>
+        // });
 
     });
 </script>

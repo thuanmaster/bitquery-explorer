@@ -3,85 +3,136 @@
   <div class="card">
     <div class="card-header"><%= t('widgets.headers.tx_info') %></div>
     <div class="card-body">
-      <div id="tx_info"><%= t('loading') %></div>
+      <div class="text-center widgets-loading" id="loading"><div role="status" class="spinner-border text-info"><span class="sr-only"><%= t('loading') %></span></div></div>
+      <div class="widgets-blur" id="container-data">
+        <div class="table-responsive" id="table-data" style="display: none;">
+          <table class="table table-striped table-hover table-sm widgets-table">
+            <thead>
+              <tr>
+                <th class=""><%= t('widgets.titles.attribute') %></th>
+                <th class=""><%= t('widgets.titles.property_value') %></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
 </div>
 </div>
 <script>
+  function loadDataTable() {
+    queryCseScan('transactions/<%= @hash %>', '')
+    .done(function(data) {
+      $('#table-data').show();
+      console.log('query data', data);
+      tableBody = $("table tbody");
+      tableBody.append(`<tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.block') %></span></td>
+          <td class="ellipsis "><span>${data.tx.blockHeight}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.timestamp') %></span></td>
+          <td class="ellipsis "><span>${m(Number(data.tx.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_sender') %></span></td>
+          <td class="ellipsis "><span><a href="/cse30/address/${data.tx.from}">${data.tx.from}</a></span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_to') %></span></td>
+          <td class="ellipsis "><span><a href="/cse30/address/${data.tx.to}">${data.tx.to}</a></span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.amount') %></span></td>
+          <td class="ellipsis "><span>${formatNumber(Number(data.tx.amount) / Math.pow(10, 8))}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.fee') %></span></td>
+          <td class="ellipsis "><span>${formatNumber(Number(data.tx.feeNetwork) / Math.pow(10, 8))}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Status</span></td>
+          <td class="ellipsis "><span>${data.tx.status}</span></td>
+        </tr>`);
+      toogleLoading(false);
+    });
+  }
 
     $( document ).ready(function() {
+      loadDataTable();
+
+        // var query = new widgets.query(`query (
+        //                       $hash: String!){
+        //                   tron{
+        //                     transactions(txHash: {is: $hash}
+        //                   ){
+
+        //                         block {
+        //                                 height
+        //                                 timestamp {
+        //                                   time (format: "%Y-%m-%d %H:%M:%S")
+        //                                 }
+        //                               }
 
 
-        var query = new widgets.query(`query (
-                              $hash: String!){
-                          tron{
-                            transactions(txHash: {is: $hash}
-                          ){
-
-                                block {
-                                        height
-                                        timestamp {
-                                          time (format: "%Y-%m-%d %H:%M:%S")
-                                        }
-                                      }
+        //                               success
 
 
-                                      success
+        //                               contractAddress{
+        //                                 address
+        //                                 annotation
+        //                               }
 
-
-                                      contractAddress{
-                                        address
-                                        annotation
-                                      }
-
-                                      fee
-                                      feeLimit
-                                      netFee
-                                      energyFee
-                           }
-                          }
-                        }`);
+        //                               fee
+        //                               feeLimit
+        //                               netFee
+        //                               energyFee
+        //                    }
+        //                   }
+        //                 }`);
 
 
 
-        new widgets.table('#tx_info', query, 'tron.transactions', {
-            title: '<%= t('widgets.headers.tx_info') %>',
-            renderData: function (data) {
-                item = data[0];
-                return !item ? [] : [
-                    {name: '<%= t('widgets.titles.block') %>', value: item.block.height, block: item.block},
-                    {name: '<%= t('widgets.titles.timestamp') %>', value: item.block.timestamp.time},
-                    {name: '<%= t('widgets.titles.smart_contract') %>', value: (item.contractAddress.annotation || item.contractAddress.address), address: item.contractAddress},
-                    {name: '<%= t('widgets.titles.fee') %>', value: item.fee},
-                    {name: '<%= t('widgets.titles.netfee') %>', value: item.netFee},
-                    {name: '<%= t('widgets.titles.energyfee') %>', value: item.energyFee},
-                    {name: '<%= t('widgets.titles.feelimit') %>', value: item.feeLimit},
-                    {name: '<%= t('widgets.titles.success') %>', value: item.success + ' ' + item.error },
+        // new widgets.table('#tx_info', query, 'tron.transactions', {
+        //     title: '<%= t('widgets.headers.tx_info') %>',
+        //     renderData: function (data) {
+        //         item = data[0];
+        //         return !item ? [] : [
+        //             {name: '<%= t('widgets.titles.block') %>', value: item.block.height, block: item.block},
+        //             {name: '<%= t('widgets.titles.timestamp') %>', value: item.block.timestamp.time},
+        //             {name: '<%= t('widgets.titles.smart_contract') %>', value: (item.contractAddress.annotation || item.contractAddress.address), address: item.contractAddress},
+        //             {name: '<%= t('widgets.titles.fee') %>', value: item.fee},
+        //             {name: '<%= t('widgets.titles.netfee') %>', value: item.netFee},
+        //             {name: '<%= t('widgets.titles.energyfee') %>', value: item.energyFee},
+        //             {name: '<%= t('widgets.titles.feelimit') %>', value: item.feeLimit},
+        //             {name: '<%= t('widgets.titles.success') %>', value: item.success + ' ' + item.error },
 
-                ];
-            },
-            dataOptions: [
-                {
-                    title: '<%= t('widgets.titles.attribute') %>',
-                    type: 'string',
-                    path: 'name',
-                    style: 'width: 110px',
-                    html_class: 'text-info font-weight-bold'
-                },
-                {
-                    title: '<%= t('widgets.titles.property_value') %>',
-                    type: 'string-ellipsis',
-                    path: 'value',
-                    urlCallbackName: 'property_value_path'
-                },
-            ]
-        });
+        //         ];
+        //     },
+        //     dataOptions: [
+        //         {
+        //             title: '<%= t('widgets.titles.attribute') %>',
+        //             type: 'string',
+        //             path: 'name',
+        //             style: 'width: 110px',
+        //             html_class: 'text-info font-weight-bold'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.property_value') %>',
+        //             type: 'string-ellipsis',
+        //             path: 'value',
+        //             urlCallbackName: 'property_value_path'
+        //         },
+        //     ]
+        // });
 
-        query.request({
+        // query.request({
 
-            hash: '<%= @hash %>'
-        });
+        //     hash: '<%= @hash %>'
+        // });
 
     });
 </script>
