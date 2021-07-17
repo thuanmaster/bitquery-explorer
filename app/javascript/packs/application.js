@@ -323,7 +323,23 @@ global.numberWithCommas = function(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+global.formatNumber = function(num) {
+    if (!num) return 0;
+    return Math.floor(num * 1000) / 1000
+}
+
 global.queryCseScan = function(url, params){
     console.log('queryCseScan', url, params);
-    return $.get(`${url}?${params}`);
+    return $.get(`https://csescan.com/api/v1/${url}?${params}`);
 };
+
+
+global.toogleLoading = function(state) {
+    if (state) {
+        $('#container-data').addClass('widgets-blur');
+        $('#loading').show();
+    } else {
+        $('#container-data').removeClass('widgets-blur');
+        $('#loading').hide();
+    }
+}

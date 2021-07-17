@@ -158,6 +158,8 @@ This project is licensed under the terms of the **MIT** license.
 You are encouraged to build your ownb explorers, data analytical web sites, embed part of this project on your web site
 and more!
 
+### Mac M1 -> run ruby in Terminal rosetta
+
 ### Class in camelcase
 
 ### Services
