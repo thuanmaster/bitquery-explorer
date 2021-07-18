@@ -209,9 +209,13 @@ global.search = function(selector){
         // form.find('input').not(this).val($(this).val());
         if (it.val() == '') {
             is_find = false;
+            console.log('input empty');
+            f.find('.search_btn').css({ display: 'inline-block' });
             f.find('button').addClass('disabled');
         } else {
+            console.log('input have data');
             is_find = true;
+            f.find('.search_btn').attr('style', 'display: none !important');
             f.find('button').removeClass('disabled');
         }
     });

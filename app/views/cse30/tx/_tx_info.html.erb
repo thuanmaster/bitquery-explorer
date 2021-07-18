@@ -69,6 +69,10 @@
           <td class="ellipsis "><span>${data.tx.status}</span></td>
         </tr>`);
       toogleLoading(false);
+    })
+    .catch(function() {
+        toogleLoading(false);
+        $('#table-data').html('No data');
     });
   }
 

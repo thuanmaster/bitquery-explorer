@@ -58,6 +58,10 @@
           <td class="ellipsis "><span>${data.block.nonce}</span></td>
         </tr>`);
       toogleLoading(false);
+    })
+    .catch(function() {
+      toogleLoading(false);
+      $('#container-data').html('No data');
     });
   }
 

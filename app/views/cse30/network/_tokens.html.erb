@@ -31,26 +31,30 @@
     var currentPage = 1;
 
     function loadDataTable() {
-    queryCseScan('tokens', `pagination.page=${currentPage}&pagination.limit=10`)
-    .then(function(data) {
-        $('#table-data').show();
-        console.log('query data', data);
-        tableBody = $("table tbody");
-        data.listings.forEach(function(item) {
-        tableBody.append(`<tr>
-            <td class=""><span><a href="/cse30/token/${item.tokenAddress}">${item.name}</a></span></td>
-            <td class=""><span>${item.symbol}</span></td>
-            <td class=""><span>${item.tokenAddress}</span></td>
-            <td class=""><span>${numberWithCommas(Number(item.totalSupply)/Math.pow(10,item.decimals))}</span></td>
-            <td class="text-right "><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
-        </tr>`)
+        queryCseScan('tokens', `pagination.page=${currentPage}&pagination.limit=10`)
+        .then(function(data) {
+            $('#table-data').show();
+            console.log('query data', data);
+            tableBody = $("table tbody");
+            data.listings.forEach(function(item) {
+            tableBody.append(`<tr>
+                <td class=""><span><a href="/cse30/token/${item.tokenAddress}">${item.name}</a></span></td>
+                <td class=""><span>${item.symbol}</span></td>
+                <td class=""><span>${item.tokenAddress}</span></td>
+                <td class=""><span>${numberWithCommas(Number(item.totalSupply)/Math.pow(10,item.decimals))}</span></td>
+                <td class="text-right "><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+            </tr>`)
+            });
+            // <td class=""><span><a href="/cse30/block/${item.blockHeight}">${item.blockHeight}</a></span></td>
+            toogleLoading(false);
+            if (Number(data.pagination.pages) < Number(data.pagination.page)) {
+            $('.more-text').hide();
+            }
+        })
+        .catch(function() {
+            toogleLoading(false);
+            $('#table-data').html('No data');
         });
-        // <td class=""><span><a href="/cse30/block/${item.blockHeight}">${item.blockHeight}</a></span></td>
-        toogleLoading(false);
-        if (Number(data.pagination.pages) < Number(data.pagination.page)) {
-        $('.more-text').hide();
-        }
-    });
     }
     $( document ).ready(function() {
 
