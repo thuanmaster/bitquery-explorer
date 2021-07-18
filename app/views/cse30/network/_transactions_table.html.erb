@@ -39,16 +39,21 @@
       data.listings.forEach(function(item) {
         tableBody.append(`<tr>
           <td class=""><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
-          <td class=""><span><a href="/cse30/block/${item.blockHeight}">${item.blockHeight}</a></span></td>
-          <td class=""><span><a href="/cse30/address/${item.from}">${item.from}</a></span></td>
-          <td class=""><span><a href="/cse30/tx/${item.hash}">${item.hash}</a></span></td>
+          <td class="ellipsis"><span><a href="/cse30/block/${item.blockHeight}">${item.blockHeight}</a></span></td>
+          <td class="ellipsis"><span><a href="/cse30/address/${item.from}">${item.from}</a></span></td>
+          <td class="ellipsis"><span><a href="/cse30/tx/${item.hash}">${item.hash}</a></span></td>
           <td class="text-right "><span>${formatNumber(Number(item.feeNetwork)/Math.pow(10,8))}</span></td>
         </tr>`)
       });
       toogleLoading(false);
-      if (Number(data.pagination.pages) < Number(data.pagination.page)) {
+      if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
         $('.more-text').hide();
       }
+    })
+    .catch(function() {
+      toogleLoading(false);
+      $('#table-data').html('No data');
+      $('.more-text').hide();
     });
   }
   $( document ).ready(function() {

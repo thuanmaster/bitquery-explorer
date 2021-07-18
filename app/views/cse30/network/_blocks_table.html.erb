@@ -46,9 +46,14 @@
           </tr>`)
         });
         toogleLoading(false);
-        if (Number(data.pagination.pages) < Number(data.pagination.page)) {
+        if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
           $('.more-text').hide();
         }
+      })
+      .catch(function() {
+        toogleLoading(false);
+        $('#table-data').html('No data');
+        $('.more-text').hide();
       });
     }
 

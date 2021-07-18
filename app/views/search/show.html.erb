@@ -15,8 +15,12 @@
 <script>
 
 $( document ).ready(function() {
-  console.log('search func', );
-  if ('<%= @network[:network] %>' === 'cse30') {
+  console.log('search func','<%= @network %>');
+  var currentNetwork = '';
+  <% if @network %>
+  var currentNetwork = '<%= @network[:network] %>';
+  <% end %>
+  if (currentNetwork === 'cse30') {
     queryCseScan('search', 'text=<%= @query %>')
     .then(function(data) {
       console.log('search data', data);
