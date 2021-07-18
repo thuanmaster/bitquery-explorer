@@ -23,7 +23,11 @@ class Cse30::TokenController < NetworkController
   # GRAPHQL
 
   def transfers
-    render 'cse30/trc20token/transfers'
+    render 'cse30/token/transfers'
+  end
+
+  def holders
+    render 'cse30/token/holders'
   end
 
   def senders

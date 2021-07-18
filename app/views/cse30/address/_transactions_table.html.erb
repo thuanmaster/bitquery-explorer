@@ -14,7 +14,7 @@
                     <th class="">Status</th>
                     <th class=""><%= t('widgets.titles.tx_sender') %></th>
                     <th class=""><%= t('widgets.titles.receiver') %></th>
-                    <th class=""><%= t('widgets.titles.amount') %></th>
+                    <th class="text-right"><%= t('widgets.titles.amount') %></th>
                     <th class="text-right"><%= t('widgets.titles.fee') %></th>
                   </tr>
                 </thead>
@@ -44,8 +44,8 @@
           <td class=""><span>${item.status}</span></td>
           <td class="ellipsis"><span><a href="/cse30/address/${item.from}">${item.from}</a></span></td>
           <td class="ellipsis"><span><a href="/cse30/address/${item.to}">${item.to}</a></span></td>
-          <td class="text-right "><span>${formatNumber(Number(item.amount)/Math.pow(10, 8))}</span></td>
-          <td class="text-right "><span>${formatNumber(Number(item.feeNetwork)/Math.pow(10, 8))}</span></td>
+          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.amount)/Math.pow(10, 8)))}</span></td>
+          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.feeNetwork)/Math.pow(10, 8)))}</span></td>
         </tr>`)
       });
       toogleLoading(false);

@@ -28,7 +28,7 @@
     .then(function(data) {
       $('#table-data').show();
       console.log('query data', data);
-      tableBody = $("table tbody");
+      tableBody = $("#table-data table tbody");
       tableBody.append(`<tr>
           <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.block') %></span></td>
           <td class="ellipsis "><span>${data.tx.blockHeight}</span></td>
@@ -44,7 +44,7 @@
         ${data.tx.token ?
           `<tr>
             <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Interacted With (To)</span></td>
-            <td class="ellipsis "><span>[Contract <a href="/cse30/smart_contract/${data.tx.to}">${data.tx.to}</a> (${data.tx.token.name}: ${data.tx.token.symbol})]</span></td>
+            <td class="ellipsis "><span>[Contract <a href="/cse30/token/${data.tx.to}">${data.tx.to}</a> (${data.tx.token.name}: ${data.tx.token.symbol})]</span></td>
           </tr>
           <tr>
             <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Token Transferred</span></td>

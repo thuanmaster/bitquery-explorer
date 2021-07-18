@@ -1,0 +1,121 @@
+<div class="col-12 col-lg-6 mb-4">
+  <div class="card">
+    <div class="card-header"><%= t('widgets.headers.token_attributes') %></div>
+    <div class="card-body">
+      <div class="text-center widgets-loading" id="loading"><div role="status" class="spinner-border text-info"><span class="sr-only"><%= t('loading') %></span></div></div>
+      <div class="widgets-blur" id="container-data">
+        <div class="table-responsive" id="table-data" style="display: none;">
+          <table class="table table-striped table-hover table-sm widgets-table">
+            <thead>
+              <tr>
+                <th class=""><%= t('widgets.titles.attribute') %></th>
+                <th class=""><%= t('widgets.titles.property_value') %></th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function loadDataTable() {
+    queryCseScan('tokens', 'pagination.page=1&pagination.limit=10&filters.tokenAddress=<%= @token %>')
+    .then(function(data) {
+      $('#table-data').show();
+      console.log('query data', data);
+      tableBody = $("#table-data table tbody");
+      tableBody.append(`<tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold">Total Supply</span></td>
+          <td class=" "><span>${numberWithCommas(formatNumber(Number(data.listings[0].totalSupply) / Math.pow(10, data.listings[0].decimals)))} ${data.listings[0].symbol}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold">Transfer Fee</span></td>
+          <td class="ellipsis "><span>${numberWithCommas(formatNumber(Number(data.listings[0].feeTransferToken) / Math.pow(10, data.listings[0].decimals)))}</span></td>
+        </tr>`);
+      toogleLoading(false);
+      queryCseScan('wallets', `filters.tokenAddress=<%= @token %>&pagination.page=1&pagination.limit=5`)
+      .then(function(data) {
+        tableBody.append(`<tr>
+            <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.token.holders.name') %></span></td>
+            <td class=" "><span>${numberWithCommas(Number(data.pagination.size))}</span></td>
+          </tr>`);
+      });
+      queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.tokenAddress=<%= @token %>&pagination.page=1&pagination.limit=5`)
+      .then(function(data) {
+        tableBody.append(`<tr>
+            <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.token.transfers.name') %></span></td>
+            <td class=" "><span>${numberWithCommas(Number(data.pagination.size))}</span></td>
+          </tr>`);
+      });
+    })
+    .catch(function(err) {
+      toogleLoading(false);
+      $('#container-data').html('No data');
+    });
+  }
+    $( document ).ready(function() {
+      loadDataTable();
+    //     var query = new widgets.query(`
+    //         query( $address: String!) {
+    //           tron{
+    //             address(address: {is: $address}){
+
+    //               annotation
+    //               address
+
+    //               smartContract {
+    //                 contractType
+    //                 currency{
+    //                   symbol
+    //                   name
+    //                   decimals
+    //                   tokenType
+    //                 }
+    //               }
+
+    //             }
+    //           }
+    //         }`);
+
+
+
+    //     new widgets.table('#ethereum_token_attributes', query, 'tron.address', {
+    //         title: '<%= t('widgets.headers.token_attributes') %>',
+    //         renderData: function(data){
+    //             item = data[0];
+    //             return !item ? [] : [
+    //                 {name: '<%= t('widgets.headers.token_symbol') %>', value: item.smartContract.currency.symbol},
+    //                 {name: '<%= t('widgets.headers.token_type') %>', value: item.smartContract.currency.tokenType},
+    //                 {name: '<%= t('widgets.headers.token_name') %>', value: item.smartContract.currency.name},
+    //                 {name: '<%= t('widgets.headers.token_decimals') %>', value: item.smartContract.currency.decimals},
+    //                 {name: '<%= t('widgets.headers.annotation') %>', value: item.annotation}
+    //             ];
+    //         },
+    //         dataOptions: [
+    //             {
+    //                 title: '<%= t('widgets.titles.property') %>',
+    //                 type: 'string-ellipsis',
+    //                 path: 'name',
+    //                 html_class: 'text-info font-weight-bold'
+    //             },
+    //             {
+    //                 title:  '<%= t('widgets.titles.property_value') %>',
+    //                 type: 'string-ellipsis',
+    //                 path: 'value',
+    //                 urlCallbackName: 'property_value_path'
+    //             },
+    //         ]
+    //     });
+
+    //     query.request({
+    //         address: '<%= @address %>'});
+
+    });
+
+
+
+</script>

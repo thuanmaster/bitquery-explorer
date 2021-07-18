@@ -14,7 +14,7 @@
                     <th class="">Status</th>
                     <th class=""><%= t('widgets.titles.tx_sender') %></th>
                     <th class=""><%= t('widgets.titles.receiver') %></th>
-                    <th class=""><%= t('widgets.titles.amount') %></th>
+                    <th class="text-right"><%= t('widgets.titles.amount') %></th>
                     <th class="text-right"><%= t('widgets.titles.fee') %></th>
                   </tr>
                 </thead>
@@ -33,7 +33,7 @@
   var currentPage = 1;
 
   function loadDataTable() {
-    queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.address=<%= @address %>&pagination.page=${currentPage}&pagination.limit=10`)
+    queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.tokenAddress=<%= @token %>&pagination.page=${currentPage}&pagination.limit=10`)
     .then(function(data) {
       $('#table-data').show();
       console.log('query data', data);

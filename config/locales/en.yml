@@ -304,6 +304,11 @@ en:
         keywords: "%{token} transfers, %{token} transfer, %{token} money transfer, 
         %{token} transfer fee, %{token} transfer analytics, Latest %{token} transfers.
         %{token} transaction volume"
+      holders:
+        name: 'Holders'
+        title: "%{token} Exchange volume | %{network}"
+        description: "Holders of token %{token} in %{network}"
+        keywords: "%{token} exchange volume, %{token} exchange volume analytics, unique %{token} holders"
       senders:
         name: 'Senders'
         title: "%{token} Exchange volume | %{network}"
