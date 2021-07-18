@@ -25,7 +25,7 @@
 <script>
   function loadDataTable() {
     queryCseScan('transactions/<%= @hash %>', '')
-    .done(function(data) {
+    .then(function(data) {
       $('#table-data').show();
       console.log('query data', data);
       tableBody = $("table tbody");
@@ -41,10 +41,21 @@
           <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_sender') %></span></td>
           <td class="ellipsis "><span><a href="/cse30/address/${data.tx.from}">${data.tx.from}</a></span></td>
         </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_to') %></span></td>
-          <td class="ellipsis "><span><a href="/cse30/address/${data.tx.to}">${data.tx.to}</a></span></td>
-        </tr>
+        ${data.tx.token ?
+          `<tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Interacted With (To)</span></td>
+            <td class="ellipsis "><span>[Contract <a href="/cse30/smart_contract/${data.tx.to}">${data.tx.to}</a> (${data.tx.token.name}: ${data.tx.token.symbol})]</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Token Transferred</span></td>
+            <td class="ellipsis "><span>To <a href="/cse30/address/${data.tx.data.payload.to}">${data.tx.data.payload.to}</a> ${numberWithCommas(formatNumber(Number(data.tx.data.payload.amount) / Math.pow(10, data.tx.token.decimals)))} ${data.tx.token.symbol}</span></td>
+          </tr>`
+        :
+          `<tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_to') %></span></td>
+            <td class="ellipsis "><span><a href="/cse30/address/${data.tx.to}">${data.tx.to}</a></span></td>
+          </tr>`
+        }
         <tr>
           <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.amount') %></span></td>
           <td class="ellipsis "><span>${formatNumber(Number(data.tx.amount) / Math.pow(10, 8))}</span></td>

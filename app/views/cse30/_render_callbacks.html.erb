@@ -2,7 +2,7 @@
     widgets.callbacks({
         token_path: function(item){
             if(item.currency.tokenType=='TRC10') {
-                return '<%= locale_path_prefix %><%= @network[:network] %>/trc10token/'+  item.currency.tokenId;
+                return '<%= locale_path_prefix %><%= @network[:network] %>/token/'+  item.currency.tokenId;
             } else  if (item.currency.tokenType=='TRC20'){
                 return '<%= locale_path_prefix %><%= @network[:network] %>/trc20token/'+  item.currency.address;
             }else{

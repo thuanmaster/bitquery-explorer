@@ -328,9 +328,20 @@ global.formatNumber = function(num) {
     return Math.floor(num * 1000) / 1000
 }
 
-global.queryCseScan = function(url, params){
+global.queryCseScan = function(url, params, htmlEle) {
     console.log('queryCseScan', url, params);
-    return $.get(`https://csescan.com/api/v1/${url}?${params}`);
+    return new Promise(function(resolve, reject) {
+        $.get(`https://csescan.com/api/v1/${url}?${params}`)
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err) {
+            if (htmlEle) {
+                reject('error');
+            }
+            reject( err );
+        });
+    });
 };
 
 

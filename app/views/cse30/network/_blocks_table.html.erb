@@ -32,7 +32,7 @@
 
     function loadDataTable() {
       queryCseScan('blocks', `pagination.page=${currentPage}&pagination.limit=10`)
-      .done(function(data) {
+      .then(function(data) {
         $('#table-data').show();
         console.log('query data', data);
         tableBody = $("table tbody");

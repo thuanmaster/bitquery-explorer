@@ -32,13 +32,13 @@
 
     function loadDataTable() {
     queryCseScan('tokens', `pagination.page=${currentPage}&pagination.limit=10`)
-    .done(function(data) {
+    .then(function(data) {
         $('#table-data').show();
         console.log('query data', data);
         tableBody = $("table tbody");
         data.listings.forEach(function(item) {
         tableBody.append(`<tr>
-            <td class=""><span>${item.name}</span></td>
+            <td class=""><span><a href="/cse30/token/${item.tokenAddress}">${item.name}</a></span></td>
             <td class=""><span>${item.symbol}</span></td>
             <td class=""><span>${item.tokenAddress}</span></td>
             <td class=""><span>${numberWithCommas(Number(item.totalSupply)/Math.pow(10,item.decimals))}</span></td>

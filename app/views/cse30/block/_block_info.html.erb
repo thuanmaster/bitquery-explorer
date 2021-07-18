@@ -25,7 +25,7 @@
 <script>
   function loadDataTable() {
     queryCseScan('blocks/<%= @height %>', '')
-    .done(function(data) {
+    .then(function(data) {
       $('#table-data').show();
       console.log('query data', data);
       tableBody = $("table tbody");

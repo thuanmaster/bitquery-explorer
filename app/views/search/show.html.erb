@@ -15,8 +15,32 @@
 <script>
 
 $( document ).ready(function() {
-
-        var query = new widgets.query(`
+  console.log('search func', );
+  if ('<%= @network[:network] %>' === 'cse30') {
+    queryCseScan('search', 'text=<%= @query %>')
+    .then(function(data) {
+      console.log('search data', data);
+      switch (data.type) {
+        case 'TRANSACTION':
+          return window.location.href = '/cse30/tx/<%= @query %>';
+        case 'BLOCK':
+          return window.location.href = '/cse30/block/<%= @query %>';
+        case 'TOKEN':
+          return window.location.href = '/cse30/token/<%= @query %>';
+        case 'WALLET':
+          return window.location.href = '/cse30/address/<%= @query %>';
+        default:
+          $('#search').html('<%= t('search_no_data', query: @query) %>');
+          break;
+      }
+      
+    })
+    .catch(function (err) {
+      $('#search').html('<%= t('search_no_data', query: @query) %>');
+      console.log('call err', err);
+    });
+  } else {
+    var query = new widgets.query(`
     query(<%= "$network: Network!, " if @network %>$query: String!){
       search(<%= "network: $network, " if @network %>string: $query){
           subject{
@@ -130,6 +154,7 @@ $( document ).ready(function() {
         }
     });
     query.request({<%= "network: '#{@network[:network]}', ".html_safe if @network %>query: '<%= @query %>'});
+  }
 
 });
 </script>
