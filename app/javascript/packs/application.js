@@ -349,12 +349,12 @@ global.queryCseScan = function(url, params, htmlEle) {
 };
 
 
-global.toogleLoading = function(state) {
+global.toogleLoading = function(state, eleData, eleLoad) {
     if (state) {
-        $('#container-data').addClass('widgets-blur');
-        $('#loading').show();
+        $(eleData || '#container-data').addClass('widgets-blur');
+        $(eleLoad || '#loading').show();
     } else {
-        $('#container-data').removeClass('widgets-blur');
-        $('#loading').hide();
+        $(eleData || '#container-data').removeClass('widgets-blur');
+        $(eleLoad || '#loading').hide();
     }
 }

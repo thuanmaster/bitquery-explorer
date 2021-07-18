@@ -176,6 +176,13 @@ en:
         keywords: "%{address} transactions, explore %{network} transactions, track %{network} transactions, search %{network} transactions, 
         %{network} transactions per day, %{network} transaction fee, %{network} transaction live, %{network} transaction live, %{network} transaction time, %{network} transaction data,
         %{network} transactions per second chart, %{network} transactions chart, tracking %{network} transactions, %{network} transactions status, check %{network} transactions pending"
+      transfers:
+        name: 'Transfers'
+        title: "%{address} transfers | %{network}"
+        description: "Transactions sent by address %{address} and other transaction analytics charts in %{network}"
+        keywords: "%{address} transactions, explore %{network} transactions, track %{network} transactions, search %{network} transactions, 
+        %{network} transactions per day, %{network} transaction fee, %{network} transaction live, %{network} transaction live, %{network} transaction time, %{network} transaction data,
+        %{network} transactions per second chart, %{network} transactions chart, tracking %{network} transactions, %{network} transactions status, check %{network} transactions pending"
       contracts:
         name: "Contracts"
         title: "%{address} smart contract | %{network}"
