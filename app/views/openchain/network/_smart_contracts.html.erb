@@ -9,9 +9,8 @@
                     <table class="table table-striped table-hover table-sm widgets-table ">
                         <thead>
                             <tr>
-                                <th class=""><%= t('widgets.titles.token_type') %></th>
-                                <th class=""><%= t('widgets.headers.token_symbol') %></th>
                                 <th class=""><%= t('widgets.titles.address') %></th>
+                                <th class=""><%= t('widgets.headers.token_symbol') %></th>
                                 <th class="">Total Supply</th>
                                 <th class="text-right"><%= t('widgets.titles.created') %></th>
                             </tr>
@@ -38,9 +37,8 @@
             tableBody = $("table tbody");
             data.listings.forEach(function(item) {
             tableBody.append(`<tr>
-                <td class=""><span><a href="/openchain/token/${item.tokenAddress}">${item.name}</a></span></td>
-                <td class=""><span>${item.symbol}</span></td>
                 <td class=""><span><a href="/openchain/token/${item.tokenAddress}">${item.tokenAddress}</a></span></td>
+                <td class=""><span>${item.symbol}</span></td>
                 <td class=""><span>${numberWithCommas(Number(item.totalSupply)/Math.pow(10,item.decimals))}</span></td>
                 <td class="text-right "><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
             </tr>`)
