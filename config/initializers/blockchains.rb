@@ -295,10 +295,10 @@ BLOCKCHAINS = [
     icon: 'trx.svg'
   },
   {
-    tag: 'cse30',
-    network: 'cse30',
+    tag: 'openchain',
+    network: 'openchain',
     name: 'Open Chain Mainnet',
-    family: 'cse30',
+    family: 'openchain',
     platform: 'Smart Contract',
     currency: 'CSE',
     icon: 'public/openchain_icon.png'

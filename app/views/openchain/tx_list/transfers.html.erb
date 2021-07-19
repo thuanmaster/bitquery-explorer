@@ -1,0 +1,7 @@
+<%= render partial: "shared/header/#{controller_name}" %>
+
+<% if @sender %>
+  <%= render partial: 'openchain/tx_list/outbound_transfers' %>
+<% elsif @receiver %>
+  <%= render partial: 'openchain/tx_list/inbound_transfers' %>
+<% end %>

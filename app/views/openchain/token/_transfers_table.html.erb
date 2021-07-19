@@ -1,0 +1,159 @@
+<div class="row">
+  <div class="col-12 col-lg-12 mb-4">
+    <div class="card">
+      <div class="card-header"><%= t('widgets.headers.transfers') %></div>
+      <div class="card-body">
+        <div class="text-center widgets-loading" id="loading"><div role="status" class="spinner-border text-info"><span class="sr-only"><%= t('loading') %></span></div></div>
+        <div class="widgets-blur" id="container-data">
+          <div class="table-responsive" id="table-data" style="display: none;">
+            <table class="table table-striped table-hover table-sm widgets-table ">
+                <thead>
+                  <tr>
+                    <th class=""><%= t('widgets.titles.timestamp') %></th>
+                    <th class=""><%= t('widgets.titles.hash') %></th>
+                    <th class="">Status</th>
+                    <th class=""><%= t('widgets.titles.tx_sender') %></th>
+                    <th class=""><%= t('widgets.titles.receiver') %></th>
+                    <th class="text-right"><%= t('widgets.titles.amount') %></th>
+                    <th class="text-right"><%= t('widgets.titles.fee') %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="more-text"><div class="more-text-link"><a class="more-link" id="more-link">Show more...</a></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var currentPage = 1;
+
+  function loadDataTable() {
+    queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.tokenAddress=<%= @token %>&pagination.page=${currentPage}&pagination.limit=10`)
+    .then(function(data) {
+      $('#table-data').show();
+      console.log('query data', data);
+      tableBody = $("table tbody");
+      data.listings.forEach(function(item) {
+        tableBody.append(`<tr>
+          <td class=""><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          <td class="ellipsis"><span><a href="/openchain/tx/${item.hash}">${item.hash}</a></span></td>
+          <td class=""><span>${item.status}</span></td>
+          <td class="ellipsis"><span><a href="/openchain/address/${item.from}">${item.from}</a></span></td>
+          <td class="ellipsis"><span><a href="/openchain/address/${item.data.payload.to}">${item.data.payload.to}</a></span></td>
+          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.data.payload.amount)/Math.pow(10, item.token.decimals)))} ${item.token.symbol}</span></td>
+          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.data.payload.feeToken)/Math.pow(10, item.token.decimals)))} ${item.token.symbol}</span></td>
+        </tr>`)
+      });
+      toogleLoading(false);
+      if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
+        $('.more-text').hide();
+      }
+    })
+    .catch(function() {
+      toogleLoading(false);
+      $('#table-data').html('No data');
+      $('.more-text').hide();
+    });
+  }
+
+    $( document ).ready(function() {
+      $('#more-link').on('click', function() {
+        toogleLoading(true);
+        currentPage++;
+        loadDataTable();
+      });
+
+        loadDataTable();
+        // var query = new widgets.query(`
+        //                 query (
+        //                         $limit: Int!,
+        //                         $offset: Int!
+        //                         $date: ISO8601DateTime,
+        //                         $height: Int){
+        //             tron{
+        //               transfers(options:{ desc: "amount",limit: $limit, offset: $offset},
+        //                 date: {is: $date } height: {is: $height}
+        //                 amount: {gt: 0}
+        //                 ) {
+
+
+        //                   sender {
+        //                     address
+        //                     annotation
+        //                   }
+        //                   receiver {
+        //                     address
+        //                     annotation
+        //                   }
+
+        //                   currency {
+        //                     address
+        //                     symbol
+        //                     tokenId
+        //                     tokenType
+        //                   }
+
+        //                   amount
+
+        //                   txHash
+
+        //               }
+        //             }
+        //           }`);
+
+        // new widgets.table('#latest_transfers', query, 'tron.transfers', {
+        //     title: '<%= t('widgets.headers.latest_transfers') %>',
+        //     dataOptions: [
+
+        //         {
+        //             title: '<%= t('widgets.titles.sender') %>',
+        //             type: 'string-ellipsis',
+        //             path: ['sender.annotation','sender.address'],
+        //             urlCallbackName: 'sender_address_path'
+        //         },
+        //         {
+        //             title: '',
+        //             type: 'string',
+        //             data: '<i class="fa fa-sign-in text-success"></i>',
+        //             html_class: 'text-center'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.receiver') %>',
+        //             type: 'string-ellipsis',
+        //             path: ['receiver.annotation','receiver.address'],
+        //             urlCallbackName: 'receiver_address_path'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.amount') %>',
+        //             type: 'amount',
+        //             path: 'amount'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.currency') %>',
+        //             type: 'string',
+        //             path: 'currency.symbol',
+        //             urlCallbackName: 'token_path'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.hash') %>',
+        //             type: 'string-ellipsis',
+        //             path: 'txHash',
+        //             urlCallbackName: 'transaction_path'
+        //         },
+
+
+        //     ]
+        // });
+
+        // query.request({
+        //     height: <%= @height %>, date: '<%= @block_date %>', network: '<%= @network[:network] %>'
+        // });
+
+    });
+
+</script>

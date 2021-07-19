@@ -20,19 +20,19 @@ $( document ).ready(function() {
   <% if @network %>
   var currentNetwork = '<%= @network[:network] %>';
   <% end %>
-  if (currentNetwork === 'cse30') {
+  if (currentNetwork === 'openchain') {
     queryCseScan('search', 'text=<%= @query %>')
     .then(function(data) {
       console.log('search data', data);
       switch (data.type) {
         case 'TRANSACTION':
-          return window.location.href = '/cse30/tx/<%= @query %>';
+          return window.location.href = '/openchain/tx/<%= @query %>';
         case 'BLOCK':
-          return window.location.href = '/cse30/block/<%= @query %>';
+          return window.location.href = '/openchain/block/<%= @query %>';
         case 'TOKEN':
-          return window.location.href = '/cse30/token/<%= @query %>';
+          return window.location.href = '/openchain/token/<%= @query %>';
         case 'WALLET':
-          return window.location.href = '/cse30/address/<%= @query %>';
+          return window.location.href = '/openchain/address/<%= @query %>';
         default:
           $('#search').html('<%= t('search_no_data', query: @query) %>');
           break;

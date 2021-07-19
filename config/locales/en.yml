@@ -724,7 +724,7 @@ en:
         %{network} smart contracts calls analytics, %{network} smart contracts methods analytics,
         %{network} smart contract users"
       contracts:
-        name: "Contracts"
+        name: "Smart Contracts"
         title: "Contracts on %{network} Explorer"
         description: "Contracts list for %{network}"
         keywords: "%{network} contracts, %{network} smart contracts"

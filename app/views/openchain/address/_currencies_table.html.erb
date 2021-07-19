@@ -1,0 +1,157 @@
+<div class="col-12 col-lg-6 mb-4">
+  <div class="card">
+    <div class="card-header"><%= t('widgets.headers.currencies_balances') %></div>
+    <div class="card-body">
+        <div class="text-center widgets-loading" id="loading-token"><div role="status" class="spinner-border text-info"><span class="sr-only"><%= t('loading') %></span></div></div>
+        <div class="widgets-blur" id="container-data-token">
+          <div class="table-responsive" id="table-data-token" style="display: none;">
+            <table class="table table-striped table-hover table-sm widgets-table ">
+                <thead>
+                  <tr>
+                    <th class=""><%= t('widgets.titles.currency') %></th>
+                    <th class=""><%= t('widgets.titles.balance') %></th>
+                    <th class="text-right">Freeze</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="more-text"><div class="more-text-link"><a class="more-link" id="more-link">Show more...</a></div></div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var currentPage = 1;
+
+  function loadDataTokenTable() {
+    queryCseScan(`wallet/<%= @address %>/tokens/balances`, `pagination.page=${currentPage}&pagination.limit=5`)
+    .then(function(data) {
+      $('#table-data-token').show();
+      console.log('query data', data);
+      tableTokenBody = $("#table-data-token table tbody");
+      data.listings.forEach(function(item) {
+        tableTokenBody.append(`<tr>
+          <td class=""><span><a href="/openchain/token/${item.tokenAddress}">${item.symbol} (${item.name})</a></span></td>
+          <td class=" "><span>${numberWithCommas(formatNumber(Number(item.free) / Math.pow(10, item.decimals)))}</span></td>
+          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.freeze) / Math.pow(10, item.decimals)))}</span></td>
+        </tr>`)
+      });
+      toogleLoading(false, '#container-data-token', '#loading-token');
+      if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
+        $('.more-text').hide();
+      }
+    })
+    .catch(function() {
+      toogleLoading(false, '#container-data-token', '#loading-token');
+      $('#table-data-token').html('No data');
+      $('.more-text').hide();
+    });
+  }
+
+    $( document ).ready(function() {
+
+      $('#more-link').on('click', function() {
+        toogleLoading(true, '#container-data-token', '#loading-token');
+        currentPage++;
+        loadDataTokenTable();
+      });
+
+        loadDataTokenTable();
+
+        // var query = new widgets.query(`
+        //     query(
+        //           $address: String!,
+        //           $from: ISO8601DateTime,
+        //           $till: ISO8601DateTime,
+        //           $limit: Int!,
+        //           $offset: Int!){
+        //       tron{
+        //         transfers(date: {since: $from, till: $till},
+        //         amount: {gt: 0}
+        //         options: {limit: $limit, offset: $offset, desc: ["count_in","count_out"] asc: "currency.symbol"}){
+        //             sum_in: amount(calculate: sum,
+        //               receiver: {is: $address}
+        //             )
+        //             sum_out: amount(calculate: sum,
+        //               sender: {is: $address}
+        //             )
+        //             count_in: count(
+        //               receiver: {is: $address}
+        //             )
+        //             count_out: count(
+        //               sender: {is: $address}
+        //             )
+        //             currency {
+        //               address
+        //               symbol
+        //               tokenId
+        //               tokenType
+        //             }
+        //           }
+        //       }
+        //     }`);
+
+        // new widgets.table('#currencies_table', query, 'tron.transfers', {
+        //     title: '<%= t('widgets.headers.currencies_sent_received') %>',
+        //     dataOptions: [
+        //         {
+        //             title: '<%= t('widgets.titles.currency') %>',
+        //             type: 'string-ellipsis',
+        //             path: 'currency.symbol',
+        //             urlCallbackName: 'token_path'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.token_type') %>',
+        //             type: 'string-ellipsis',
+        //             path: 'currency.tokenType'
+        //         },
+        //         {
+        //             title: '',
+        //             type: 'string',
+        //             data: '<i class="fa fa-sign-in text-success"></i>',
+        //             html_class: 'text-center'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.receive') %>',
+        //             type: 'amount',
+        //             path: 'sum_in'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.txs') %>',
+        //             type: 'count',
+        //             path: 'count_in',
+        //             data: '%{DATA} <span class="fa fa-list"></span>',
+        //             urlCallbackName: 'transfer_to_path'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.send') %>',
+        //             type: 'amount',
+        //             path: 'sum_out'
+        //         },
+        //         {
+        //             title: '',
+        //             type: 'string',
+        //             data: '<i class="fa fa-sign-out text-warning"></i>',
+        //         },
+        //         {
+        //             title: '<%#= t('widgets.titles.txs') %>',
+        //             type: 'count',
+        //             path: 'count_out',
+        //             data: '%{DATA} <span class="fa fa-list"></span>',
+        //             urlCallbackName: 'transfer_from_path'
+        //         },
+        //     ]
+        // });
+
+        // queryWithTimeRange(rr, query, <%= @from.html_safe %>,<%= @till.html_safe %>,{
+
+        //     address: '<%= @address %>'
+        // });
+
+
+    });
+
+</script>

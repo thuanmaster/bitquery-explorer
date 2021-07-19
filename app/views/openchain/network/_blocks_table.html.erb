@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="col-12 col-lg-12 mb-4">
+    <div class="card">
+      <div class="card-header"><%= t('widgets.headers.latest_blocks') %></div>
+      <div class="card-body">
+        <div class="text-center widgets-loading" id="loading"><div role="status" class="spinner-border text-info"><span class="sr-only"><%= t('loading') %></span></div></div>
+        <div class="widgets-blur" id="container-data">
+          <div class="table-responsive" id="table-data" style="display: none;">
+            <table class="table table-striped table-hover table-sm widgets-table ">
+                <thead>
+                  <tr>
+                      <th class=""><%= t('widgets.titles.timestamp') %></th>
+                      <th class=""><%= t('widgets.titles.block') %></th>
+                      <th class="">Transactions</th>
+                      <th class="">Difficulty</th>
+                      <th class="text-right">Size in byte</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div class="more-text"><div class="more-text-link"><a class="more-link" id="more-link">Show more...</a></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var currentPage = 1;
+
+    function loadDataTable() {
+      queryCseScan('blocks', `pagination.page=${currentPage}&pagination.limit=10`)
+      .then(function(data) {
+        $('#table-data').show();
+        console.log('query data', data);
+        tableBody = $("table tbody");
+        data.listings.forEach(function(item) {
+          tableBody.append(`<tr>
+            <td class=""><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+            <td class=""><span><a href="/openchain/block/${item.height}">${item.height}</a></span></td>
+            <td class=""><span>${item.transactions}</span></td>
+            <td class=""><span>${numberWithCommas(item.difficulty)}</span></td>
+            <td class="text-right "><span>${numberWithCommas(item.size)}</span></td>
+          </tr>`)
+        });
+        toogleLoading(false);
+        if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
+          $('.more-text').hide();
+        }
+      })
+      .catch(function() {
+        toogleLoading(false);
+        $('#table-data').html('No data');
+        $('.more-text').hide();
+      });
+    }
+
+    $(document).ready(function() {
+
+      $('#more-link').on('click', function() {
+        toogleLoading(true);
+        currentPage++;
+        loadDataTable();
+      });
+
+        loadDataTable();
+    
+      
+        // var query = new widgets.query(`
+        //                 query (
+        //                         $limit: Int!,
+        //                         $offset: Int!
+        //                         $from: ISO8601DateTime,
+        //                         $till: ISO8601DateTime){
+        //             tron{
+        //               blocks(options:{desc: "height", limit: $limit, offset: $offset},
+        //                 date: {since: $from till: $till }
+        //                 ) {
+
+
+        //                   timestamp {
+        //                     time (format: "%Y-%m-%d %H:%M:%S")
+        //                   }
+        //                   height
+
+        //                   address: witness {
+        //                     address
+        //                     annotation
+        //                   }
+        //               }
+        //             }
+        //           }`);
+
+        // new widgets.table('#latest_blocks', query, 'tron.blocks', {
+        //     title: '<%= t('widgets.headers.latest_blocks') %>',
+        //     dataOptions: [
+        //         {
+        //             title: '<%= t('widgets.titles.timestamp') %>',
+        //             type: 'string',
+        //             path: 'timestamp.time'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.block') %>',
+        //             type: 'string',
+        //             path: 'height',
+        //             urlCallbackName: 'block_path'
+        //         },
+        //         {
+        //             title: '<%= t('widgets.titles.witness') %>',
+        //             type: 'string',
+        //             path: ['address.annotation','address.address'],
+        //             urlCallbackName: 'address_path'
+        //         }
+        //     ]
+        // });
+
+        // queryWithTimeRange(rr, query, <%= limited_date_range_limit(@from, @till).join(',').html_safe %>,{
+        //     network: '<%= params['network']['network'] %>'
+        // });
+
+    });
+
+</script>
