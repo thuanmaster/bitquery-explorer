@@ -1,4 +1,4 @@
-<div class="col-12 col-lg-6 mb-4">
+<%# <div class="col-12 col-lg-6 mb-4"> %>
   <div class="card">
     <div class="card-header"><%= t('widgets.headers.token_attributes') %></div>
     <div class="card-body">
@@ -19,40 +19,57 @@
       </div>
     </div>
   </div>
-</div>
+<%# </div> %>
 
 <script>
+  const address = '<%= @token %>';
+  const formatedAddress = web3.utils.toChecksumAddress(address);
+
   function loadDataTable() {
-    queryCseScan('tokens', 'pagination.page=1&pagination.limit=10&filters.tokenAddress=<%= @token %>')
-    .then(function(data) {
+    Promise.all([
+      queryBlockScout(`api?module=token&action=getToken&contractaddress=${formatedAddress}`),
+      queryBlockScout(`token-counters?id=${formatedAddress}`),
+    ])
+    .then(function ([info, stat]) {
+      console.log('get data', info, stat);
+    // })
+    // queryCseScan('tokens', 'pagination.page=1&pagination.limit=10&filters.tokenAddress=<%= @token %>')
+    // .then(function(data) {
       $('#table-data').show();
-      console.log('query data', data);
+      // console.log('query data', data);
       tableBody = $("#table-data table tbody");
       tableBody.append(`<tr>
-          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold">Total Supply</span></td>
-          <td class=" "><span>${numberWithCommas(formatNumber(Number(data.listings[0].totalSupply) / Math.pow(10, data.listings[0].decimals)))} ${data.listings[0].symbol}</span></td>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.headers.token_symbol') %></span></td>
+          <td class=" "><span>${info.result.symbol}</span></td>
         </tr>
         <tr>
-          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold">Transfer Fee</span></td>
-          <td class="ellipsis "><span>${numberWithCommas(formatNumber(Number(data.listings[0].feeTransferToken) / Math.pow(10, data.listings[0].decimals)))}</span></td>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.headers.token_type') %></span></td>
+          <td class=" "><span>${info.result.type}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.headers.token_name') %></span></td>
+          <td class=" "><span>${info.result.name}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.headers.token_decimals') %></span></td>
+          <td class=" "><span>${info.result.decimals}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.transfer_count') %></span></td>
+          <td class="ellipsis "><span>${numberWithCommas(stat.transfer_count)}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.token.holders.name') %></span></td>
+          <td class="ellipsis "><span>${numberWithCommas(stat.token_holder_count)}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.total_amount') %></span></td>
+          <td class="ellipsis "><span>${numberWithCommas(formatNumber(Number(info.result.totalSupply) / Math.pow(10, Number(info.result.decimals))))}</span></td>
         </tr>`);
       toogleLoading(false);
-      queryCseScan('wallets', `filters.tokenAddress=<%= @token %>&pagination.page=1&pagination.limit=5`)
-      .then(function(data) {
-        tableBody.append(`<tr>
-            <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.token.holders.name') %></span></td>
-            <td class=" "><span>${numberWithCommas(Number(data.pagination.size))}</span></td>
-          </tr>`);
-      });
-      queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.tokenAddress=<%= @token %>&pagination.page=1&pagination.limit=5`)
-      .then(function(data) {
-        tableBody.append(`<tr>
-            <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.token.transfers.name') %></span></td>
-            <td class=" "><span>${numberWithCommas(Number(data.pagination.size))}</span></td>
-          </tr>`);
-      });
     })
     .catch(function(err) {
+      console.log('catch err', err);
       toogleLoading(false);
       $('#container-data').html('No data');
     });

@@ -24,45 +24,99 @@
 </div>
 <script>
   function loadDataTable() {
-    queryCseScan('blocks/<%= @height %>', '')
+    graphqlBlockScout(
+      'query {\n  block(number: <%= @height %>) {\n    consensus\n    difficulty\n    gasLimit\n    gasUsed\n    hash\n    minerHash\n    nonce\n    number\n    parentHash\n    size\n    timestamp\n    totalDifficulty\n  }\n}',
+      'block'
+    )
     .then(function(data) {
-      $('#table-data').show();
-      console.log('query data', data);
-      tableBody = $("table tbody");
-      tableBody.append(`<tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.timestamp') %></span></td>
-          <td class="ellipsis "><span>${m(Number(data.block.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Transactions</span></td>
-          <td class="ellipsis "><span>${data.block.transactions}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Difficulty</span></td>
-          <td class="ellipsis "><span>${numberWithCommas(data.block.difficulty)}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Size</span></td>
-          <td class="ellipsis "><span>${numberWithCommas(data.block.size)}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Hash</span></td>
-          <td class="ellipsis "><span>${data.block.hash}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Parent Hash</span></td>
-          <td class="ellipsis "><span>${data.block.preHash}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Nonce</span></td>
-          <td class="ellipsis "><span>${data.block.nonce}</span></td>
-        </tr>`);
-      toogleLoading(false);
+      console.log('[block info graphql]', data);
+      queryBlockScout('blocks/<%= @height %>/transactions?type=JSON')
+      .then(function(trans) {
+        $('#table-data').show();
+        console.log('query block trans', trans);
+        tableBody = $("table tbody");
+        tableBody.append(`<tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.timestamp') %></span></td>
+            <td class="ellipsis "><span>${m(data.timestamp).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Miner</span></td>
+            <td class="ellipsis "><span><a href="/openchain/address/${data.minerHash}">${data.minerHash}</a></span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Transactions</span></td>
+            <td class="ellipsis "><span>${trans.items.length}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Difficulty</span></td>
+            <td class="ellipsis "><span>${numberWithCommas(data.totalDifficulty)}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Size</span></td>
+            <td class="ellipsis "><span>${numberWithCommas(data.size)}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Hash</span></td>
+            <td class="ellipsis "><span>${data.hash}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Parent Hash</span></td>
+            <td class="ellipsis "><span>${data.parentHash}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Nonce</span></td>
+            <td class="ellipsis "><span>${data.nonce}</span></td>
+          </tr>`);
+        toogleLoading(false);
+      })
+      .catch(function() {
+        toogleLoading(false);
+        $('#container-data').html('No data');
+      });
     })
     .catch(function() {
       toogleLoading(false);
       $('#container-data').html('No data');
     });
+    // queryCseScan('blocks/<%= @height %>', '')
+    // .then(function(data) {
+    //   $('#table-data').show();
+    //   console.log('query data', data);
+    //   tableBody = $("table tbody");
+    //   tableBody.append(`<tr>
+    //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.timestamp') %></span></td>
+    //       <td class="ellipsis "><span>${m(Number(data.block.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+    //     </tr>
+    //     <tr>
+    //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Transactions</span></td>
+    //       <td class="ellipsis "><span>${data.block.transactions}</span></td>
+    //     </tr>
+    //     <tr>
+    //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Difficulty</span></td>
+    //       <td class="ellipsis "><span>${numberWithCommas(data.block.difficulty)}</span></td>
+    //     </tr>
+    //     <tr>
+    //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Size</span></td>
+    //       <td class="ellipsis "><span>${numberWithCommas(data.block.size)}</span></td>
+    //     </tr>
+    //     <tr>
+    //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Hash</span></td>
+    //       <td class="ellipsis "><span>${data.block.hash}</span></td>
+    //     </tr>
+    //     <tr>
+    //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Parent Hash</span></td>
+    //       <td class="ellipsis "><span>${data.block.preHash}</span></td>
+    //     </tr>
+    //     <tr>
+    //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Nonce</span></td>
+    //       <td class="ellipsis "><span>${data.block.nonce}</span></td>
+    //     </tr>`);
+    //   toogleLoading(false);
+    // })
+    // .catch(function() {
+    //   toogleLoading(false);
+    //   $('#container-data').html('No data');
+    // });
   }
 
     $( document ).ready(function() { 

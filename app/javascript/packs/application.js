@@ -15,11 +15,13 @@ import ClipboardJS from 'clipboard'
 import moment from 'moment'
 import vis from 'vis'
 import numeral from 'numeral'
+import Web3 from 'web3/dist/web3.min.js'
 
 global.$ = $;
 global.vis = vis;
 global.numeral = numeral;
 global.m = moment;
+global.web3 = new Web3();
 
 
 $('document').ready(function(){
@@ -324,12 +326,14 @@ global.queryWithTimeRange = function(rr, query, from, till, params){
 };
 
 global.numberWithCommas = function(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    const split = x.toString().split('.');
+    split[0] = split[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return split.join('.');
 }
 
 global.formatNumber = function(num) {
     if (!num) return 0;
-    return Math.floor(num * 1000) / 1000
+    return Math.floor(num * 100000000) / 100000000
 }
 
 global.queryCseScan = function(url, params, htmlEle) {
@@ -347,6 +351,40 @@ global.queryCseScan = function(url, params, htmlEle) {
         });
     });
 };
+
+global.queryBlockScout = function(url, htmlEle) {
+    console.log('queryBlockScout', url);
+    return new Promise(function(resolve, reject) {
+        $.get(`https://opcscan.openchain.info/${url}`)
+        .done(function(data){
+            resolve(data);
+        })
+        .fail(function(err) {
+            if (htmlEle) {
+                reject('error');
+            }
+            reject( err );
+        });
+    });
+};
+
+global.graphqlBlockScout = function(query, key) {
+    return new Promise(function(resolve, reject) {
+        $.post('https://opcscan.openchain.info//graphiql', {
+            query: query,
+            variables: null
+        })
+        .done(function(data){
+            resolve(data.data[key]);
+        })
+        .fail(function(err) {
+            if (htmlEle) {
+                reject('error');
+            }
+            reject( err );
+        });
+    });
+}
 
 
 global.toogleLoading = function(state, eleData, eleLoad) {

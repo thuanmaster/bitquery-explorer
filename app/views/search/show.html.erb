@@ -21,21 +21,23 @@ $( document ).ready(function() {
   var currentNetwork = '<%= @network[:network] %>';
   <% end %>
   if (currentNetwork === 'openchain') {
-    queryCseScan('search', 'text=<%= @query %>')
+    queryBlockScout('token-autocomplete?q=<%= @query %>')
     .then(function(data) {
       console.log('search data', data);
-      switch (data.type) {
-        case 'TRANSACTION':
-          return window.location.href = '/openchain/tx/<%= @query %>';
-        case 'BLOCK':
-          return window.location.href = '/openchain/block/<%= @query %>';
-        case 'TOKEN':
-          return window.location.href = '/openchain/token/<%= @query %>';
-        case 'WALLET':
-          return window.location.href = '/openchain/address/<%= @query %>';
-        default:
-          $('#search').html('<%= t('search_no_data', query: @query) %>');
-          break;
+      if (data.length) {
+        switch (data[0].type) {
+          case 'transaction':
+            return window.location.href = '/openchain/tx/<%= @query %>';
+          case 'block':
+            return window.location.href = '/openchain/block/<%= @query %>';
+          case 'address':
+            return window.location.href = '/openchain/address/<%= @query %>';
+          default:
+            $('#search').html('<%= t('search_no_data', query: @query) %>');
+            break;
+        }
+      } else {
+        $('#search').html('<%= t('search_no_data', query: @query) %>');
       }
       
     })

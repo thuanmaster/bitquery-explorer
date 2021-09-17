@@ -10,10 +10,9 @@
                 <thead>
                   <tr>
                     <th class=""><%= t('widgets.titles.timestamp') %></th>
-                    <th class=""><%= t('widgets.titles.hash') %></th>
-                    <th class="">Status</th>
-                    <th class=""><%= t('widgets.titles.tx_sender') %></th>
+                    <th class=""><%= t('widgets.titles.block') %></th>
                     <th class=""><%= t('widgets.titles.receiver') %></th>
+                    <th class=""><%= t('widgets.titles.hash') %></th>
                     <th class="text-right"><%= t('widgets.titles.amount') %></th>
                     <th class="text-right"><%= t('widgets.titles.fee') %></th>
                   </tr>
@@ -31,25 +30,29 @@
 
 <script>
   var currentPage = 1;
+  const address = '<%= @address %>';
+  const formatedAddress = web3.utils.toChecksumAddress(address);
+
   function loadDataTable() {
-    queryCseScan('transactions', `filters.method=NORMAL&filters.address=<%= @address %>&pagination.page=${currentPage}&pagination.limit=10`)
+    queryBlockScout(`address/${formatedAddress}/transactions?type=JSON`)
     .then(function(data) {
       $('#table-data').show();
       console.log('query data', data);
       tableBody = $("table tbody");
-      data.listings.forEach(function(item) {
+      data.raw.forEach(function(item) {
         tableBody.append(`<tr>
-          <td class=""><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          <td class="" style="width: 180px;"><span>${m(item.timestamp).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          <td class="ellipsis" style="width: 90px;"><span><a href="/openchain/block/${item.block_number}">#${item.block_number}</a></span></td>
+          <td class="ellipsis"><span><a href="/openchain/address/${web3.utils.toChecksumAddress(item.from)}">${web3.utils.toChecksumAddress(item.from)}</a></span></td>
           <td class="ellipsis"><span><a href="/openchain/tx/${item.hash}">${item.hash}</a></span></td>
-          <td class=""><span>${item.status}</span></td>
-          <td class="ellipsis"><span><a href="/openchain/address/${item.from}">${item.from}</a></span></td>
-          <td class="ellipsis"><span><a href="/openchain/address/${item.to}">${item.to}</a></span></td>
-          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.amount)/Math.pow(10, 8)))}</span></td>
-          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.feeNetwork)/Math.pow(10, 8)))}</span></td>
+          <td class="text-right " style="width: 110px;"><span>${numberWithCommas(formatNumber(Number(item.value.value)/Math.pow(10, 18)))} OPC</span></td>
+          <td class="text-right " style="width: 110px;"><span>${numberWithCommas(formatNumber(Number(item.gas_used)/Math.pow(10, 8)))}</span></td>
         </tr>`)
       });
       toogleLoading(false);
-      if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
+      if (data.next_page_path) {
+        queryPage = data.next_page_path + '&type=JSON';
+      } else {
         $('.more-text').hide();
       }
     })

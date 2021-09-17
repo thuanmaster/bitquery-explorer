@@ -9,12 +9,12 @@
             <table class="table table-striped table-hover table-sm widgets-table ">
                 <thead>
                   <tr>
-                    <th class=""><%= t('widgets.titles.timestamp') %></th>
-                    <th class=""><%= t('widgets.titles.block') %></th>
-                    <th class="">Transactions</th>
-                    <th class="">Miner</th>
-                    <th class="">Difficulty</th>
-                    <th class="text-right">Size in byte</th>
+                    <th class=""></th>
+                    <th class=""><%= t('widgets.headers.token_name') %></th>
+                    <th class=""><%= t('widgets.titles.currency') %></th>
+                    <th class="">Address</th>
+                    <th class="text-right">Total Supply</th>
+                    <th class="text-right">Holders</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -30,22 +30,22 @@
 
 <script>
   var currentPage = 1;
-  var queryPage = 'blocks?type=JSON';
+  var queryPage = 'tokens?type=JSON';
 
     function loadDataTable() {
       queryBlockScout(queryPage)
       .then(function(data) {
         $('#table-data').show();
-        console.log('[query blocks queryBlockScout]', data);
+        console.log('[query tokens queryBlockScout]', data);
         tableBody = $("table tbody");
         data.raw.forEach(function(item) {
           tableBody.append(`<tr>
-            <td class=""><span>${m(item.timestamp).format('YYYY-MM-DD HH:mm:ss')}</span></td>
-            <td class=""><span><a href="/openchain/block/${item.number}">${item.number}</a></span></td>
-            <td class=""><span>${item.transactions}</span></td>
-            <td class=""><span><a href="/openchain/address/${item.miner.hash}">${item.miner.hash}</a></span></td>
-            <td class="text-right"><span>${numberWithCommas(item.total_difficulty)}</span></td>
-            <td class="text-right"><span>${numberWithCommas(item.size)}</span></td>
+            <td class=""><span>${item.index}</span></td>
+            <td class=""><span><a href="/openchain/token/${item.data.contract_address_hash}">${item.data.name}</a></span></td>
+            <td class=""><span>${item.data.symbol}</span></td>
+            <td class=""><span><a href="/openchain/address/${item.data.contract_address_hash}">${item.data.contract_address_hash}</a></span></td>
+            <td class="text-right"><span>${numberWithCommas(Number(item.data.total_supply.slice(0, item.data.total_supply.length - Number(item.data.decimals))))}</span></td>
+            <td class="text-right"><span>${numberWithCommas(item.data.holder_count)}</span></td>
           </tr>`)
         });
         toogleLoading(false);

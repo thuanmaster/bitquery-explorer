@@ -300,7 +300,7 @@ BLOCKCHAINS = [
     name: 'Open Chain Mainnet',
     family: 'openchain',
     platform: 'Smart Contract',
-    currency: 'CSE',
+    currency: 'OPC',
     icon: 'public/openchain_icon.png'
   },
   {

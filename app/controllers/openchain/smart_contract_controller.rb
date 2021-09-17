@@ -4,24 +4,24 @@ class Openchain::SmartContractController < NetworkController
 
   before_action :token, :breadcrumb
 
-  # QUERY = BitqueryGraphql::Client.parse <<-'GRAPHQL'
-  #  query ( $token: String!){
-  #                   tron{
-  #                     transfers(
-  #                       currency: {is: $token}
-  #                       ) {
-  #            currency {
-  #                           address
-  #                           symbol
-  #                           tokenId
-  #                           tokenType
-  #                         }
+  QUERY = BitqueryGraphql::Client.parse <<-'GRAPHQL'
+   query ( $token: String!){
+                    tron{
+                      transfers(
+                        currency: {is: $token}
+                        ) {
+             currency {
+                            address
+                            symbol
+                            tokenId
+                            tokenType
+                          }
 
 
-  #                     }
-  #                   }
-  #                 }
-  # GRAPHQL
+                      }
+                    }
+                  }
+  GRAPHQL
 
   def transfers
     render 'openchain/token/transfers'

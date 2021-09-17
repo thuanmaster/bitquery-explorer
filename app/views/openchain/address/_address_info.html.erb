@@ -22,39 +22,73 @@
 </div>
 <script>
   function loadDataTable() {
-    queryCseScan('wallet/<%= @address %>', '')
-    .then(function(data) {
+    const address = '<%= @address %>';
+    const formatedAddress = web3.utils.toChecksumAddress(address);
+    Promise.all([
+      graphqlBlockScout(
+        `query {\n  address(hash: \"${formatedAddress}\") {\n    fetchedCoinBalance\n    fetchedCoinBalanceBlockNumber\n  }\n}`,
+        'address'
+      ),
+      queryBlockScout(`address-counters?id=${formatedAddress}`)
+    ]).then(([amount, stat]) => {
+      console.log('Promise.all', amount, stat);
       $('#table-data').show();
-      console.log('query data', data);
       tableBody = $("#table-data table tbody");
       tableBody.append(`<tr>
           <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.current_balance') %></span></td>
-          <td class=" "><span>${numberWithCommas(formatNumber(Number(data.free) / Math.pow(10, 8)))}</span></td>
+          <td class=" "><span>${numberWithCommas(formatNumber(Number(amount.fetchedCoinBalance) / Math.pow(10, 18)))} OPC</span></td>
         </tr>
         <tr>
-          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_creates') %></span></td>
-          <td class="ellipsis "><span>${m(Number(data.date+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold">Last Balance Update</span></td>
+          <td class=" "><span><a href="/openchain/block/${amount.fetchedCoinBalanceBlockNumber}">#${amount.fetchedCoinBalanceBlockNumber}</a></span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold">Gas used</span></td>
+          <td class="ellipsis "><span>${numberWithCommas(stat.gas_usage_count)}</span></td>
+        </tr>
+        <tr>
+          <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.trc10token.transactions.name') %></span></td>
+          <td class="ellipsis "><span>${numberWithCommas(stat.transaction_count)}</span></td>
         </tr>`);
       toogleLoading(false);
-      queryCseScan('transactions', `filters.method=NORMAL&filters.address=<%= @address %>&pagination.page=1&pagination.limit=5`)
-      .then(function(data) {
-        tableBody.append(`<tr>
-            <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.trc10token.transactions.name') %></span></td>
-            <td class=" "><span>${numberWithCommas(Number(data.pagination.size))}</span></td>
-          </tr>`);
-      });
-      queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.address=<%= @address %>&pagination.page=1&pagination.limit=5`)
-      .then(function(data) {
-        tableBody.append(`<tr>
-            <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.token.transfers.name') %></span></td>
-            <td class=" "><span>${numberWithCommas(Number(data.pagination.size))}</span></td>
-          </tr>`);
-      });
     })
     .catch(function(err) {
       toogleLoading(false);
       $('#container-data').html('No data');
     });
+    // queryCseScan('wallet/<%= @address %>', '')
+    // .then(function(data) {
+    //   $('#table-data').show();
+    //   console.log('query data', data);
+    //   tableBody = $("#table-data table tbody");
+    //   tableBody.append(`<tr>
+    //       <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.current_balance') %></span></td>
+    //       <td class=" "><span>${numberWithCommas(formatNumber(Number(data.free) / Math.pow(10, 8)))}</span></td>
+    //     </tr>
+    //     <tr>
+    //       <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_creates') %></span></td>
+    //       <td class="ellipsis "><span>${m(Number(data.date+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+    //     </tr>`);
+    //   toogleLoading(false);
+    //   queryCseScan('transactions', `filters.method=NORMAL&filters.address=<%= @address %>&pagination.page=1&pagination.limit=5`)
+    //   .then(function(data) {
+    //     tableBody.append(`<tr>
+    //         <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.trc10token.transactions.name') %></span></td>
+    //         <td class=" "><span>${numberWithCommas(Number(data.pagination.size))}</span></td>
+    //       </tr>`);
+    //   });
+    //   queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.address=<%= @address %>&pagination.page=1&pagination.limit=5`)
+    //   .then(function(data) {
+    //     tableBody.append(`<tr>
+    //         <td class="text-info font-weight-bold" style="width: 130px;"><span class="text-info font-weight-bold"><%= t('tabs.token.transfers.name') %></span></td>
+    //         <td class=" "><span>${numberWithCommas(Number(data.pagination.size))}</span></td>
+    //       </tr>`);
+    //   });
+    // })
+    // .catch(function(err) {
+    //   toogleLoading(false);
+    //   $('#container-data').html('No data');
+    // });
   }
 
     $( document ).ready(function() { 

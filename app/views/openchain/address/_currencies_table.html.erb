@@ -9,14 +9,13 @@
                 <thead>
                   <tr>
                     <th class=""><%= t('widgets.titles.currency') %></th>
-                    <th class=""><%= t('widgets.titles.balance') %></th>
-                    <th class="text-right">Freeze</th>
+                    <th class="text-right"><%= t('widgets.titles.balance') %></th>
                   </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
-            <div class="more-text"><div class="more-text-link"><a class="more-link" id="more-link">Show more...</a></div></div>
+            <%# <div class="more-text"><div class="more-text-link"><a class="more-link" id="more-link">Show more...</a></div></div> %>
           </div>
         </div>
     </div>
@@ -24,25 +23,26 @@
 </div>
 
 <script>
+  const address = '<%= @address %>';
+  const formatedAddress = web3.utils.toChecksumAddress(address);
   var currentPage = 1;
 
   function loadDataTokenTable() {
-    queryCseScan(`wallet/<%= @address %>/tokens/balances`, `pagination.page=${currentPage}&pagination.limit=5`)
+    queryBlockScout(`/api?module=account&action=tokenlist&address=${formatedAddress}`)
     .then(function(data) {
       $('#table-data-token').show();
       console.log('query data', data);
       tableTokenBody = $("#table-data-token table tbody");
-      data.listings.forEach(function(item) {
+      data.result.forEach(function(item) {
         tableTokenBody.append(`<tr>
-          <td class=""><span><a href="/openchain/token/${item.tokenAddress}">${item.symbol} (${item.name})</a></span></td>
-          <td class=" "><span>${numberWithCommas(formatNumber(Number(item.free) / Math.pow(10, item.decimals)))}</span></td>
-          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.freeze) / Math.pow(10, item.decimals)))}</span></td>
+          <td class=""><span><a href="/openchain/token/${item.contractAddress}">${item.symbol} (${item.name})</a></span></td>
+          <td class="text-right"><span>${numberWithCommas(formatNumber(Number(item.balance) / Math.pow(10, Number(item.decimals))))}</span></td>
         </tr>`)
       });
       toogleLoading(false, '#container-data-token', '#loading-token');
-      if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
-        $('.more-text').hide();
-      }
+      // if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
+      //   $('.more-text').hide();
+      // }
     })
     .catch(function() {
       toogleLoading(false, '#container-data-token', '#loading-token');

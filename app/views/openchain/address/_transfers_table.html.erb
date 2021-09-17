@@ -10,18 +10,18 @@
                 <thead>
                   <tr>
                     <th class=""><%= t('widgets.titles.timestamp') %></th>
+                    <th class=""><%= t('widgets.titles.block') %></th>
                     <th class=""><%= t('widgets.titles.hash') %></th>
-                    <th class="">Status</th>
-                    <th class=""><%= t('widgets.titles.tx_sender') %></th>
                     <th class=""><%= t('widgets.titles.receiver') %></th>
-                    <th class=""><%= t('widgets.titles.amount') %></th>
+                    <th class="text-right"><%= t('widgets.titles.amount') %></th>
+                    <th class=""><%= t('widgets.titles.currency') %></th>
                     <th class="text-right"><%= t('widgets.titles.fee') %></th>
                   </tr>
                 </thead>
                 <tbody>
                 </tbody>
             </table>
-            <div class="more-text"><div class="more-text-link"><a class="more-link" id="more-link">Show more...</a></div></div>
+            <%# <div class="more-text"><div class="more-text-link"><a class="more-link" id="more-link">Show more...</a></div></div> %>
           </div>
         </div>
       </div>
@@ -33,26 +33,27 @@
   var currentPage = 1;
 
   function loadDataTable() {
-    queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.address=<%= @address %>&pagination.page=${currentPage}&pagination.limit=10`)
+    queryBlockScout('/api?module=account&action=tokentx&address=<%= @address %>')
+    // queryCseScan('transactions', `filters.method=INITIAL_TOKEN&filters.method=TRANSFER_TOKEN&filters.address=<%= @address %>&pagination.page=${currentPage}&pagination.limit=10`)
     .then(function(data) {
       $('#table-data').show();
       console.log('query data', data);
       tableBody = $("table tbody");
-      data.listings.forEach(function(item) {
+      data.result.forEach(function(item) {
         tableBody.append(`<tr>
-          <td class=""><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          <td class="" style="width: 180px;"><span>${m(Number(item.timeStamp+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          <td class="" style="width: 90px;"><span><a href="/openchain/block/${item.blockNumber}">#${item.blockNumber}</a></span></td>
           <td class="ellipsis"><span><a href="/openchain/tx/${item.hash}">${item.hash}</a></span></td>
-          <td class=""><span>${item.status}</span></td>
-          <td class="ellipsis"><span><a href="/openchain/address/${item.from}">${item.from}</a></span></td>
-          <td class="ellipsis"><span><a href="/openchain/address/${item.data.payload.to}">${item.data.payload.to}</a></span></td>
-          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.data.payload.amount)/Math.pow(10, item.token.decimals)))} ${item.token.symbol}</span></td>
-          <td class="text-right "><span>${numberWithCommas(formatNumber(Number(item.data.payload.feeToken)/Math.pow(10, item.token.decimals)))} ${item.token.symbol}</span></td>
+          <td class="ellipsis"><span><a href="/openchain/address/${item.to}">${item.to}</a></span></td>
+          <td class="text-right " style="width: 100px;"><span>${numberWithCommas(formatNumber(Number(item.value)/Math.pow(10, Number(item.tokenDecimal))))}</span></td>
+          <td class="" style="width: 200px;"><span><a href="/openchain/token/${item.contractAddress}">${item.tokenSymbol} (${item.tokenName})</a></span></td>
+          <td class="text-right " style="width: 100px;"><span>${numberWithCommas(formatNumber(Number(item.gasUsed)/Math.pow(10, 18)))} OPC</span></td>
         </tr>`)
       });
       toogleLoading(false);
-      if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
-        $('.more-text').hide();
-      }
+      // if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
+      //   $('.more-text').hide();
+      // }
     })
     .catch(function() {
       toogleLoading(false);

@@ -13,7 +13,7 @@
                     <th class=""><%= t('widgets.titles.block') %></th>
                     <th class=""><%= t('widgets.titles.tx_sender') %></th>
                     <th class=""><%= t('widgets.titles.hash') %></th>
-                    <th class="text-right"><%= t('widgets.titles.fee') %></th>
+                    <th class="text-right"><%= t('widgets.titles.fee') %> OPC</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -29,24 +29,27 @@
 
 <script>
   var currentPage = 1;
+  var queryPage = 'txs?type=JSON';
 
   function loadDataTable() {
-    queryCseScan('transactions', `pagination.page=${currentPage}&pagination.limit=10`)
+    queryBlockScout(queryPage)
     .then(function(data) {
+      console.log('[query txs queryBlockScout]', data);
       $('#table-data').show();
-      console.log('query data', data);
       tableBody = $("table tbody");
-      data.listings.forEach(function(item) {
+      data.raw.forEach(function(item) {
         tableBody.append(`<tr>
-          <td class=""><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
-          <td class="ellipsis"><span><a href="/openchain/block/${item.blockHeight}">${item.blockHeight}</a></span></td>
-          <td class="ellipsis"><span><a href="/openchain/address/${item.from}">${item.from}</a></span></td>
+          <td class="" style="width: 170px;"><span>${m(item.inserted_at).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          <td class="" style="width: 80px;"><span><a href="/openchain/block/${item.block_number}">${item.block_number}</a></span></td>
+          <td class="ellipsis"><span><a href="/openchain/address/${item.from_address_hash}">${item.from_address_hash}</a></span></td>
           <td class="ellipsis"><span><a href="/openchain/tx/${item.hash}">${item.hash}</a></span></td>
-          <td class="text-right "><span>${formatNumber(Number(item.feeNetwork)/Math.pow(10,8))}</span></td>
+          <td class="text-right " style="width: 110px;"><span>${formatNumber(Number(item.gas_used)/Math.pow(10,9))}</span></td>
         </tr>`)
       });
       toogleLoading(false);
-      if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
+      if (data.next_page_path) {
+        queryPage = data.next_page_path + '&type=JSON';
+      } else {
         $('.more-text').hide();
       }
     })
@@ -55,6 +58,31 @@
       $('#table-data').html('No data');
       $('.more-text').hide();
     });
+
+    // queryCseScan('transactions', `pagination.page=${currentPage}&pagination.limit=10`)
+    // .then(function(data) {
+    //   $('#table-data').show();
+    //   console.log('query data', data);
+    //   tableBody = $("table tbody");
+    //   data.listings.forEach(function(item) {
+    //     tableBody.append(`<tr>
+    //       <td class=""><span>${m(Number(item.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+    //       <td class="ellipsis"><span><a href="/openchain/block/${item.blockHeight}">${item.blockHeight}</a></span></td>
+    //       <td class="ellipsis"><span><a href="/openchain/address/${item.from}">${item.from}</a></span></td>
+    //       <td class="ellipsis"><span><a href="/openchain/tx/${item.hash}">${item.hash}</a></span></td>
+    //       <td class="text-right "><span>${formatNumber(Number(item.feeNetwork)/Math.pow(10,8))}</span></td>
+    //     </tr>`)
+    //   });
+    //   toogleLoading(false);
+    //   if (Number(data.pagination.pages) <= Number(data.pagination.page)) {
+    //     $('.more-text').hide();
+    //   }
+    // })
+    // .catch(function() {
+    //   toogleLoading(false);
+    //   $('#table-data').html('No data');
+    //   $('.more-text').hide();
+    // });
   }
   $( document ).ready(function() {
 

@@ -24,51 +24,65 @@
 </div>
 <script>
   function loadDataTable() {
-    queryCseScan('transactions/<%= @hash %>', '')
+    graphqlBlockScout(
+      'query {\n  transaction(hash: \"<%= @hash %>\") {\n    blockNumber\n    createdContractAddressHash\n    cumulativeGasUsed\n    error\n    fromAddressHash\n    toAddressHash\n    gas\n    gasPrice\n    gasUsed\n    id\n    index\n    input\n    nonce\n    status\n    value\n  }\n}',
+      'transaction'
+    )
     .then(function(data) {
-      $('#table-data').show();
-      console.log('query data', data);
-      tableBody = $("#table-data table tbody");
-      tableBody.append(`<tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.block') %></span></td>
-          <td class="ellipsis "><span>${data.tx.blockHeight}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.timestamp') %></span></td>
-          <td class="ellipsis "><span>${m(Number(data.tx.createdAt+'000')).format('YYYY-MM-DD HH:mm:ss')}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_sender') %></span></td>
-          <td class="ellipsis "><span><a href="/openchain/address/${data.tx.from}">${data.tx.from}</a></span></td>
-        </tr>
-        ${data.tx.token ?
-          `<tr>
-            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Interacted With (To)</span></td>
-            <td class="ellipsis "><span>[Contract <a href="/openchain/token/${data.tx.to}">${data.tx.to}</a> (${data.tx.token.name}: ${data.tx.token.symbol})]</span></td>
+      graphqlBlockScout(
+        `query {\n  block(number: ${data.blockNumber}) {\n    consensus\n    difficulty\n    gasLimit\n    gasUsed\n    hash\n    minerHash\n    nonce\n    number\n    parentHash\n    size\n    timestamp\n    totalDifficulty\n  }\n}`,
+        'block'
+      )
+      .then(function (block) {
+        $('#table-data').show();
+        console.log('query data', data);
+        tableBody = $("#table-data table tbody");
+        tableBody.append(`<tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.block') %></span></td>
+            <td class="ellipsis "><span><a href="/openchain/block/${data.blockNumber}">${data.blockNumber}</a></span></td>
           </tr>
           <tr>
-            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Token Transferred</span></td>
-            <td class="ellipsis "><span>To <a href="/openchain/address/${data.tx.data.payload.to}">${data.tx.data.payload.to}</a> ${numberWithCommas(formatNumber(Number(data.tx.data.payload.amount) / Math.pow(10, data.tx.token.decimals)))} ${data.tx.token.symbol}</span></td>
-          </tr>`
-        :
-          `<tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.timestamp') %></span></td>
+            <td class="ellipsis "><span>${m(block.timestamp).format('YYYY-MM-DD HH:mm:ss')}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_sender') %></span></td>
+            <td class="ellipsis "><span><a href="/openchain/address/${data.fromAddressHash}">${data.fromAddressHash}</a></span></td>
+          </tr>
+          <tr>
             <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_to') %></span></td>
-            <td class="ellipsis "><span><a href="/openchain/address/${data.tx.to}">${data.tx.to}</a></span></td>
-          </tr>`
-        }
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.amount') %></span></td>
-          <td class="ellipsis "><span>${formatNumber(Number(data.tx.amount) / Math.pow(10, 8))}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.fee') %></span></td>
-          <td class="ellipsis "><span>${formatNumber(Number(data.tx.feeNetwork) / Math.pow(10, 8))}</span></td>
-        </tr>
-        <tr>
-          <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Status</span></td>
-          <td class="ellipsis "><span>${data.tx.status}</span></td>
-        </tr>`);
-      toogleLoading(false);
+            <td class="ellipsis "><span><a href="/openchain/address/${data.toAddressHash}">${data.toAddressHash}</a></span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.property_value') %></span></td>
+            <td class="ellipsis "><span>${formatNumber(Number(data.value) / Math.pow(10, 8))} OPC</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.gas_price') %></span></td>
+            <td class="ellipsis "><span>${formatNumber(Number(data.gasPrice) / Math.pow(10, 9))} Gwei</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Gas Limit</span></td>
+            <td class="ellipsis "><span>${formatNumber(Number(data.gas))}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.gas_used') %></span></td>
+            <td class="ellipsis "><span>${data.gasUsed}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Nonce</span></td>
+            <td class="ellipsis "><span>${data.nonce}</span></td>
+          </tr>
+          <tr>
+            <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Status</span></td>
+            <td class="ellipsis "><span>${data.status}</span></td>
+          </tr>`);
+        toogleLoading(false);
+      })
+      .catch(function() {
+          toogleLoading(false);
+          $('#table-data').html('No data');
+      });
     })
     .catch(function() {
         toogleLoading(false);
@@ -79,6 +93,21 @@
     $( document ).ready(function() {
       loadDataTable();
 
+        // ${data.tx.token ?
+        //     `<tr>
+        //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Interacted With (To)</span></td>
+        //       <td class="ellipsis "><span>[Contract <a href="/openchain/token/${data.tx.to}">${data.toAddressHash}</a> (${data.tx.token.name}: ${data.tx.token.symbol})]</span></td>
+        //     </tr>
+        //     <tr>
+        //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold">Token Transferred</span></td>
+        //       <td class="ellipsis "><span>To <a href="/openchain/address/${data.tx.data.payload.to}">${data.tx.data.payload.to}</a> ${numberWithCommas(formatNumber(Number(data.tx.data.payload.amount) / Math.pow(10, data.tx.token.decimals)))} ${data.tx.token.symbol}</span></td>
+        //     </tr>`
+        //   :
+        //     `<tr>
+        //       <td class="text-info font-weight-bold" style="width: 110px;"><span class="text-info font-weight-bold"><%= t('widgets.titles.tx_to') %></span></td>
+        //       <td class="ellipsis "><span><a href="/openchain/address/${data.tx.to}">${data.tx.to}</a></span></td>
+        //     </tr>`
+        //   }
         // var query = new widgets.query(`query (
         //                       $hash: String!){
         //                   tron{
